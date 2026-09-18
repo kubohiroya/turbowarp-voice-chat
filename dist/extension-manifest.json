@@ -1,0 +1,313 @@
+{
+  "formatVersion": 1,
+  "id": "kubohiroyavoicechat",
+  "blocks": [
+    {
+      "opcode": "aiReply",
+      "blockType": "REPORTER",
+      "arguments": []
+    },
+    {
+      "opcode": "breakSecondsLeft",
+      "blockType": "REPORTER",
+      "arguments": []
+    },
+    {
+      "opcode": "configureRelay",
+      "blockType": "COMMAND",
+      "arguments": [
+        {
+          "id": "ENDPOINT",
+          "type": "STRING"
+        }
+      ]
+    },
+    {
+      "opcode": "conversationStatus",
+      "blockType": "REPORTER",
+      "arguments": []
+    },
+    {
+      "opcode": "defineFunction",
+      "blockType": "HAT",
+      "arguments": [
+        {
+          "id": "DESCRIPTION",
+          "type": "STRING"
+        },
+        {
+          "id": "EXPORT",
+          "type": "STRING",
+          "menu": "exportModes"
+        },
+        {
+          "id": "NAME",
+          "type": "STRING"
+        },
+        {
+          "id": "SCHEMA",
+          "type": "STRING"
+        }
+      ]
+    },
+    {
+      "opcode": "endBreakNow",
+      "blockType": "COMMAND",
+      "arguments": []
+    },
+    {
+      "opcode": "endConversation",
+      "blockType": "COMMAND",
+      "arguments": []
+    },
+    {
+      "opcode": "functionArgument",
+      "blockType": "REPORTER",
+      "arguments": [
+        {
+          "id": "PATH",
+          "type": "STRING"
+        }
+      ]
+    },
+    {
+      "opcode": "functionArgumentsJson",
+      "blockType": "REPORTER",
+      "arguments": []
+    },
+    {
+      "opcode": "isActive",
+      "blockType": "BOOLEAN",
+      "arguments": []
+    },
+    {
+      "opcode": "isOnBreak",
+      "blockType": "BOOLEAN",
+      "arguments": []
+    },
+    {
+      "opcode": "isRelayPaired",
+      "blockType": "BOOLEAN",
+      "arguments": []
+    },
+    {
+      "opcode": "lastError",
+      "blockType": "REPORTER",
+      "arguments": []
+    },
+    {
+      "opcode": "pairRelay",
+      "blockType": "COMMAND",
+      "arguments": [
+        {
+          "id": "CODE",
+          "type": "STRING"
+        }
+      ]
+    },
+    {
+      "opcode": "resetUsage",
+      "blockType": "COMMAND",
+      "arguments": []
+    },
+    {
+      "opcode": "returnValue",
+      "blockType": "COMMAND",
+      "arguments": [
+        {
+          "id": "VALUE",
+          "type": "STRING"
+        }
+      ]
+    },
+    {
+      "opcode": "sendText",
+      "blockType": "COMMAND",
+      "arguments": [
+        {
+          "id": "TEXT",
+          "type": "STRING"
+        }
+      ]
+    },
+    {
+      "opcode": "setAllowInterruptions",
+      "blockType": "COMMAND",
+      "arguments": [
+        {
+          "id": "ONOFF",
+          "type": "STRING",
+          "menu": "onOff"
+        }
+      ]
+    },
+    {
+      "opcode": "setCoffeeBreak",
+      "blockType": "COMMAND",
+      "arguments": [
+        {
+          "id": "AFTER",
+          "type": "STRING",
+          "menu": "afterBreak"
+        },
+        {
+          "id": "BREAK",
+          "type": "NUMBER"
+        },
+        {
+          "id": "TALK",
+          "type": "NUMBER"
+        }
+      ]
+    },
+    {
+      "opcode": "setInstructions",
+      "blockType": "COMMAND",
+      "arguments": [
+        {
+          "id": "TEXT",
+          "type": "STRING"
+        }
+      ]
+    },
+    {
+      "opcode": "setLanguage",
+      "blockType": "COMMAND",
+      "arguments": [
+        {
+          "id": "LANG",
+          "type": "STRING",
+          "menu": "languages"
+        }
+      ]
+    },
+    {
+      "opcode": "setModel",
+      "blockType": "COMMAND",
+      "arguments": [
+        {
+          "id": "MODEL",
+          "type": "STRING",
+          "menu": "models"
+        }
+      ]
+    },
+    {
+      "opcode": "setRealtimeVoice",
+      "blockType": "COMMAND",
+      "arguments": [
+        {
+          "id": "VOICE",
+          "type": "STRING",
+          "menu": "voices"
+        }
+      ]
+    },
+    {
+      "opcode": "setSpeechInput",
+      "blockType": "COMMAND",
+      "arguments": [
+        {
+          "id": "INPUT",
+          "type": "STRING",
+          "menu": "inputs"
+        }
+      ]
+    },
+    {
+      "opcode": "setSpeechOutput",
+      "blockType": "COMMAND",
+      "arguments": [
+        {
+          "id": "OUTPUT",
+          "type": "STRING",
+          "menu": "outputs"
+        }
+      ]
+    },
+    {
+      "opcode": "startConversation",
+      "blockType": "COMMAND",
+      "arguments": []
+    },
+    {
+      "opcode": "takeBreakNow",
+      "blockType": "COMMAND",
+      "arguments": []
+    },
+    {
+      "opcode": "usageValue",
+      "blockType": "REPORTER",
+      "arguments": [
+        {
+          "id": "FIELD",
+          "type": "STRING",
+          "menu": "usageFields"
+        }
+      ]
+    },
+    {
+      "opcode": "userSaid",
+      "blockType": "REPORTER",
+      "arguments": []
+    },
+    {
+      "opcode": "whenAiReplies",
+      "blockType": "HAT",
+      "arguments": []
+    },
+    {
+      "opcode": "whenBreakEnds",
+      "blockType": "HAT",
+      "arguments": []
+    },
+    {
+      "opcode": "whenBreakStarts",
+      "blockType": "HAT",
+      "arguments": []
+    },
+    {
+      "opcode": "whenUserSays",
+      "blockType": "HAT",
+      "arguments": []
+    }
+  ],
+  "menus": [
+    {
+      "id": "afterBreak",
+      "acceptReporters": false
+    },
+    {
+      "id": "exportModes",
+      "acceptReporters": false
+    },
+    {
+      "id": "inputs",
+      "acceptReporters": false
+    },
+    {
+      "id": "languages",
+      "acceptReporters": true
+    },
+    {
+      "id": "models",
+      "acceptReporters": true
+    },
+    {
+      "id": "onOff",
+      "acceptReporters": false
+    },
+    {
+      "id": "outputs",
+      "acceptReporters": false
+    },
+    {
+      "id": "usageFields",
+      "acceptReporters": false
+    },
+    {
+      "id": "voices",
+      "acceptReporters": true
+    }
+  ]
+}

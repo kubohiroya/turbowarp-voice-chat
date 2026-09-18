@@ -1,0 +1,460 @@
+{
+  "extensionName": "Voice Chat",
+  "blocks": [
+    {
+      "opcode": "configureRelay",
+      "blockType": "COMMAND",
+      "text": "configure local relay [ENDPOINT]",
+      "description": "Sets the loopback origin of the local capability-proxy relay.",
+      "descriptionJa": "localhostで動くcapability-proxy中継のループバックoriginを設定します。",
+      "arguments": {
+        "ENDPOINT": {
+          "type": "STRING",
+          "defaultValue": "http://127.0.0.1:8787"
+        }
+      }
+    },
+    {
+      "opcode": "pairRelay",
+      "blockType": "COMMAND",
+      "text": "pair local relay with one-time code [CODE]",
+      "description": "Exchanges the eight-digit code printed by the relay for a token kept only in memory.",
+      "descriptionJa": "中継が表示した8桁のコードを、メモリだけに保持するtokenと交換します。",
+      "arguments": {
+        "CODE": {
+          "type": "STRING",
+          "defaultValue": "00000000"
+        }
+      }
+    },
+    {
+      "opcode": "isRelayPaired",
+      "blockType": "BOOLEAN",
+      "text": "local relay paired?",
+      "description": "Reports whether an unexpired relay token is held in memory.",
+      "descriptionJa": "有効期限内の中継のtokenを保持しているかを返します。",
+      "arguments": {}
+    },
+    {
+      "opcode": "setModel",
+      "blockType": "COMMAND",
+      "text": "set AI model to [MODEL]",
+      "description": "Chooses the model for the next conversation. mini is much cheaper.",
+      "descriptionJa": "次の会話で使うモデルを選びます。miniのほうがかなり安価です。",
+      "arguments": {
+        "MODEL": {
+          "type": "STRING",
+          "defaultValue": "gpt-realtime-2.1-mini",
+          "menu": "models"
+        }
+      }
+    },
+    {
+      "opcode": "setInstructions",
+      "blockType": "COMMAND",
+      "text": "set AI instructions to [TEXT]",
+      "description": "Sets the system instructions for the next conversation.",
+      "descriptionJa": "次の会話で使うシステムへの指示を設定します。",
+      "arguments": {
+        "TEXT": {
+          "type": "STRING",
+          "defaultValue": "You are a friendly character in a game. Answer in one or two short sentences."
+        }
+      }
+    },
+    {
+      "opcode": "setSpeechInput",
+      "blockType": "COMMAND",
+      "text": "hear my voice with [INPUT]",
+      "description": "realtime sends microphone audio to the model; browser recognizes speech in the browser and sends text (cheaper).",
+      "descriptionJa": "realtimeはマイクの音声をモデルに送ります。browserはブラウザで音声認識して文字列を送ります（安価）。",
+      "arguments": {
+        "INPUT": {
+          "type": "STRING",
+          "defaultValue": "realtime",
+          "menu": "inputs"
+        }
+      }
+    },
+    {
+      "opcode": "setSpeechOutput",
+      "blockType": "COMMAND",
+      "text": "speak replies with [OUTPUT]",
+      "description": "realtime plays the model's voice; browser reads the text with the browser's voice (cheaper); text does not speak.",
+      "descriptionJa": "realtimeはモデルの声で話します。browserは応答の文字列をブラウザの声で読み上げます（安価）。textは読み上げません。",
+      "arguments": {
+        "OUTPUT": {
+          "type": "STRING",
+          "defaultValue": "realtime",
+          "menu": "outputs"
+        }
+      }
+    },
+    {
+      "opcode": "setLanguage",
+      "blockType": "COMMAND",
+      "text": "set browser speech language to [LANG]",
+      "description": "Sets the language of browser speech recognition and speech output.",
+      "descriptionJa": "ブラウザの音声認識と読み上げの言語を設定します。",
+      "arguments": {
+        "LANG": {
+          "type": "STRING",
+          "defaultValue": "ja-JP",
+          "menu": "languages"
+        }
+      }
+    },
+    {
+      "opcode": "setRealtimeVoice",
+      "blockType": "COMMAND",
+      "text": "set AI voice to [VOICE]",
+      "description": "Sets the model's voice used with realtime speech output.",
+      "descriptionJa": "realtimeの音声出力で使うモデルの声を設定します。",
+      "arguments": {
+        "VOICE": {
+          "type": "STRING",
+          "defaultValue": "marin",
+          "menu": "voices"
+        }
+      }
+    },
+    {
+      "opcode": "setAllowInterruptions",
+      "blockType": "COMMAND",
+      "text": "allow interrupting the AI [ONOFF]",
+      "description": "With browser input and output, on lets you talk over a reply to stop it (use a headset). off pauses listening while the AI speaks.",
+      "descriptionJa": "ブラウザの音声入力と読み上げを使う場合、onにすると応答の読み上げ中に話しかけて止められます（ヘッドセット推奨）。offでは読み上げ中は聞き取りを止めます。",
+      "arguments": {
+        "ONOFF": {
+          "type": "STRING",
+          "defaultValue": "off",
+          "menu": "onOff"
+        }
+      }
+    },
+    {
+      "opcode": "setCoffeeBreak",
+      "blockType": "COMMAND",
+      "text": "force a coffee break every [TALK] minutes for [BREAK] minutes, then [AFTER]",
+      "description": "Ends the conversation after TALK minutes, waits BREAK minutes, then resumes with a fresh session or stops. TALK 0 turns forced breaks off.",
+      "descriptionJa": "TALK分ごとに会話を区切り、BREAK分休んだあと、新しいセッションで再開するか終了します。TALKを0にすると強制的な休憩をしません。",
+      "arguments": {
+        "TALK": {
+          "type": "NUMBER",
+          "defaultValue": "10"
+        },
+        "BREAK": {
+          "type": "NUMBER",
+          "defaultValue": "5"
+        },
+        "AFTER": {
+          "type": "STRING",
+          "defaultValue": "resume",
+          "menu": "afterBreak"
+        }
+      }
+    },
+    {
+      "opcode": "takeBreakNow",
+      "blockType": "COMMAND",
+      "text": "take a coffee break now",
+      "description": "Starts a coffee break immediately.",
+      "descriptionJa": "すぐに休憩を始めます。",
+      "arguments": {}
+    },
+    {
+      "opcode": "endBreakNow",
+      "blockType": "COMMAND",
+      "text": "end the coffee break now",
+      "description": "Ends the coffee break early.",
+      "descriptionJa": "休憩を早めに終えます。",
+      "arguments": {}
+    },
+    {
+      "opcode": "whenBreakStarts",
+      "blockType": "HAT",
+      "text": "when coffee break starts",
+      "description": "Starts when a coffee break begins.",
+      "descriptionJa": "休憩が始まったときに起動します。",
+      "arguments": {}
+    },
+    {
+      "opcode": "whenBreakEnds",
+      "blockType": "HAT",
+      "text": "when coffee break ends",
+      "description": "Starts when a coffee break ends.",
+      "descriptionJa": "休憩が終わったときに起動します。",
+      "arguments": {}
+    },
+    {
+      "opcode": "isOnBreak",
+      "blockType": "BOOLEAN",
+      "text": "on coffee break?",
+      "description": "Reports whether a coffee break is in progress.",
+      "descriptionJa": "休憩中かを返します。",
+      "arguments": {}
+    },
+    {
+      "opcode": "breakSecondsLeft",
+      "blockType": "REPORTER",
+      "text": "coffee break seconds left",
+      "description": "Reports the seconds left in the current coffee break.",
+      "descriptionJa": "今の休憩の残り秒数を返します。",
+      "arguments": {}
+    },
+    {
+      "opcode": "startConversation",
+      "blockType": "COMMAND",
+      "text": "start conversation",
+      "description": "Connects and starts listening with the current settings.",
+      "descriptionJa": "現在の設定で接続し、聞き取りを始めます。",
+      "arguments": {}
+    },
+    {
+      "opcode": "endConversation",
+      "blockType": "COMMAND",
+      "text": "end conversation",
+      "description": "Disconnects, stops listening and speaking, and cancels any coffee break.",
+      "descriptionJa": "切断し、聞き取りと読み上げを止め、休憩も取り消します。",
+      "arguments": {}
+    },
+    {
+      "opcode": "isActive",
+      "blockType": "BOOLEAN",
+      "text": "in conversation?",
+      "description": "Reports whether a conversation is running (including its coffee breaks).",
+      "descriptionJa": "会話中か（休憩中も含む）を返します。",
+      "arguments": {}
+    },
+    {
+      "opcode": "conversationStatus",
+      "blockType": "REPORTER",
+      "text": "conversation status",
+      "description": "Reports idle, connecting, listening, thinking, speaking, or break.",
+      "descriptionJa": "idle、connecting、listening、thinking、speaking、breakのいずれかを返します。",
+      "arguments": {}
+    },
+    {
+      "opcode": "sendText",
+      "blockType": "COMMAND",
+      "text": "say [TEXT] to the AI",
+      "description": "Sends typed text as if you had said it.",
+      "descriptionJa": "話しかけたのと同じように、文字列をAIに送ります。",
+      "arguments": {
+        "TEXT": {
+          "type": "STRING",
+          "defaultValue": "Hello!"
+        }
+      }
+    },
+    {
+      "opcode": "whenUserSays",
+      "blockType": "HAT",
+      "text": "when I say something",
+      "description": "Starts when browser speech recognition hears you (browser input only).",
+      "descriptionJa": "ブラウザの音声認識があなたの発話を聞き取ったときに起動します（browserの音声入力のときだけ）。",
+      "arguments": {}
+    },
+    {
+      "opcode": "userSaid",
+      "blockType": "REPORTER",
+      "text": "what I said",
+      "description": "Reports your most recent recognized utterance.",
+      "descriptionJa": "直近に認識されたあなたの発話を返します。",
+      "arguments": {}
+    },
+    {
+      "opcode": "whenAiReplies",
+      "blockType": "HAT",
+      "text": "when the AI replies",
+      "description": "Starts when a reply with text or a transcript arrives.",
+      "descriptionJa": "応答（文字列または音声の書き起こし）が届いたときに起動します。",
+      "arguments": {}
+    },
+    {
+      "opcode": "aiReply",
+      "blockType": "REPORTER",
+      "text": "AI reply",
+      "description": "Reports the most recent reply text or transcript.",
+      "descriptionJa": "直近の応答の文字列、または音声の書き起こしを返します。",
+      "arguments": {}
+    },
+    {
+      "opcode": "defineFunction",
+      "blockType": "HAT",
+      "text": "define function [NAME] description [DESCRIPTION] args schema [SCHEMA] export as [EXPORT]",
+      "description": "Defines a function. With export as tool, the AI can call it. NAME, DESCRIPTION, and SCHEMA must be literal text.",
+      "descriptionJa": "関数を定義します。export asをtoolにすると、AIから呼べるようになります。NAME、DESCRIPTION、SCHEMAには文字列を直接書く必要があります。",
+      "arguments": {
+        "NAME": {
+          "type": "STRING",
+          "defaultValue": "get_score"
+        },
+        "DESCRIPTION": {
+          "type": "STRING",
+          "defaultValue": "Returns the player's current score."
+        },
+        "SCHEMA": {
+          "type": "STRING",
+          "defaultValue": "{\"type\":\"object\",\"properties\":{}}"
+        },
+        "EXPORT": {
+          "type": "STRING",
+          "defaultValue": "tool",
+          "menu": "exportModes"
+        }
+      }
+    },
+    {
+      "opcode": "functionArgument",
+      "blockType": "REPORTER",
+      "text": "function argument [PATH]",
+      "description": "Inside a function, reports the argument at a dotted path.",
+      "descriptionJa": "関数の中で、ドット区切りのパスにある引数を返します。",
+      "arguments": {
+        "PATH": {
+          "type": "STRING",
+          "defaultValue": "city"
+        }
+      }
+    },
+    {
+      "opcode": "functionArgumentsJson",
+      "blockType": "REPORTER",
+      "text": "function arguments JSON",
+      "description": "Inside a function, reports all arguments as JSON text.",
+      "descriptionJa": "関数の中で、すべての引数をJSONテキストとして返します。",
+      "arguments": {}
+    },
+    {
+      "opcode": "returnValue",
+      "blockType": "COMMAND",
+      "text": "return [VALUE]",
+      "description": "Inside a function, returns a value and ends the script.",
+      "descriptionJa": "関数の中で値を返し、スクリプトを終了します。",
+      "arguments": {
+        "VALUE": {
+          "type": "STRING",
+          "defaultValue": "{\"score\":10}"
+        }
+      }
+    },
+    {
+      "opcode": "usageValue",
+      "blockType": "REPORTER",
+      "text": "AI usage [FIELD]",
+      "description": "Reports usage totals since the last reset. costUSD is an estimate; the OpenAI dashboard is authoritative.",
+      "descriptionJa": "最後にリセットしてからの使用量を返します。costUSDは概算で、正確な請求額はOpenAIの管理画面で確認してください。",
+      "arguments": {
+        "FIELD": {
+          "type": "STRING",
+          "defaultValue": "costUSD",
+          "menu": "usageFields"
+        }
+      }
+    },
+    {
+      "opcode": "resetUsage",
+      "blockType": "COMMAND",
+      "text": "reset AI usage",
+      "description": "Clears the usage totals.",
+      "descriptionJa": "使用量の合計を0に戻します。",
+      "arguments": {}
+    },
+    {
+      "opcode": "lastError",
+      "blockType": "REPORTER",
+      "text": "last voice chat error",
+      "description": "Reports the most recent error, or an empty string.",
+      "descriptionJa": "直近のエラーを返します。エラーがなければ空文字列を返します。",
+      "arguments": {}
+    }
+  ],
+  "menus": {
+    "models": {
+      "acceptReporters": true,
+      "items": [
+        "gpt-realtime-2.1-mini",
+        "gpt-realtime-2.1"
+      ]
+    },
+    "inputs": {
+      "acceptReporters": false,
+      "items": [
+        "realtime",
+        "browser"
+      ]
+    },
+    "outputs": {
+      "acceptReporters": false,
+      "items": [
+        "realtime",
+        "browser",
+        "text"
+      ]
+    },
+    "languages": {
+      "acceptReporters": true,
+      "items": [
+        "ja-JP",
+        "en-US",
+        "en-GB",
+        "zh-CN",
+        "ko-KR",
+        "fr-FR",
+        "de-DE",
+        "es-ES"
+      ]
+    },
+    "voices": {
+      "acceptReporters": true,
+      "items": [
+        "alloy",
+        "ash",
+        "ballad",
+        "cedar",
+        "coral",
+        "echo",
+        "marin",
+        "sage",
+        "shimmer",
+        "verse"
+      ]
+    },
+    "onOff": {
+      "acceptReporters": false,
+      "items": [
+        "off",
+        "on"
+      ]
+    },
+    "afterBreak": {
+      "acceptReporters": false,
+      "items": [
+        "resume",
+        "stop"
+      ]
+    },
+    "exportModes": {
+      "acceptReporters": false,
+      "items": [
+        "tool",
+        "none"
+      ]
+    },
+    "usageFields": {
+      "acceptReporters": false,
+      "items": [
+        "costUSD",
+        "responses",
+        "inputTokens",
+        "outputTokens",
+        "cachedInputTokens",
+        "textInputTokens",
+        "audioInputTokens",
+        "textOutputTokens",
+        "audioOutputTokens"
+      ]
+    }
+  }
+}
