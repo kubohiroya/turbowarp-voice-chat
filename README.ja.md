@@ -23,7 +23,7 @@ AIと声で会話するためのTurboWarp機能拡張です。OpenAI Realtime AP
 - 強制コーヒーブレイク：決めた時間が経つと会話を休憩にし、新しいセッションで再開する（セッションごとの料金も抑えられる）
 - 使用量と料金の概算を表示する
 
-[`@kubohiroya/turbowarp-openai-realtime-api`](https://github.com/kubohiroya/turbowarp-openai-realtime-api)、[`@kubohiroya/turbowarp-web-speech`](https://github.com/kubohiroya/turbowarp-web-speech)、[`@kubohiroya/turbowarp-named-functions`](https://github.com/kubohiroya/turbowarp-named-functions)を組み合わせて作られています。これらを含んでいるので、読み込むのはこの拡張だけにしてください。
+[`@kubohiroya/turbowarp-openai-realtime-api`](https://github.com/kubohiroya/turbowarp-openai-realtime-api)、[`@kubohiroya/turbowarp-web-speech`](https://github.com/kubohiroya/turbowarp-web-speech)、[`@kubohiroya/turbowarp-named-functions`](https://github.com/kubohiroya/turbowarp-named-functions)のComposition APIを組み合わせて作られています。含んでいるのはこれらのロジックで、ブロックではありません。[上流の機能拡張との関係](#上流の機能拡張との関係)を参照してください。
 
 ## 動作条件と安全上の注意
 
@@ -51,6 +51,83 @@ npm packageとして使う場合は、検証済みのversionをexact pinしま�
 ```bash
 pnpm add --save-exact @kubohiroya/turbowarp-voice-chat@0.1.0
 ```
+
+## 上流の機能拡張との関係
+
+この機能拡張がimportしているのは、上流の各packageの`/composition`エントリポイントです。これは何も登録しない素のTypeScript
+ライブラリです。したがってビルド後のfileは`Scratch.extensions.register`を1回だけ呼び、宣言する拡張IDは
+`kubohiroyavoicechat`のみで、下記のブロックだけを持ちます。`kubohiroyaopenairealtime`、`kubohiroyawebspeech`、
+`kubohiroyanamedfunctions`という機能拡張は含まれていません。
+
+ここから2つの帰結があります。
+
+- **上流の3つと同時に読み込まないでください。** 仕組み上は妨げられませんが、2つの機能拡張がマイク、ブラウザの音声API、
+  中継のペアリング、`define function`ハットを取り合い、realtimeのセッションはそれぞれ別に課金されます。
+- **上流のブロックで保存したプロジェクトは引き継げません。** SB3は各ブロックを`<extensionId>_<opcode>`として保存するため、
+  たとえば`kubohiroyawebspeech_speak`で組んだスクリプトはこの機能拡張では解決できません。ブロック集合も上流の上位集合には
+  なっておらず、`speak`、`startListening`、`callFunction`、`connect`などに対応するブロックはありません。上流の機能拡張を
+  そのまま使い続けるか、スクリプトを書き直して
+  [`sb3-toolchain extensions migrate-id`](https://github.com/kubohiroya/sb3-toolchain/blob/main/docs/ja/extension-id-migration.md)
+  でIDを移行してください。
+
+複数の機能拡張を1つの許可単位として読み込みたい場合は、ある機能拡張が別の機能拡張を内包することを期待するのではなく、
+プロジェクト側でまとめます。[SB3プロジェクトでの利用](#sb3プロジェクトでの利用)を参照してください。
+
+## SB3プロジェクトでの利用
+
+[`@kubohiroya/sb3-toolchain`](https://github.com/kubohiroya/sb3-toolchain)は、SB3をgitで差分の見えるソースとして管理し、
+その中にこの機能拡張をpin留めしておけます。埋め込んだJavaScriptの由来としてnpm packageを記録し、このリポジトリが公開する
+API manifestを明示的に有効にすると、更新時にfileを置き換える前にブロック単位の破壊的変更が報告されます。
+このAPI manifestの仕様は[`@kubohiroya/turbowarp-extension-manifest`](https://github.com/kubohiroya/turbowarp-extension-manifest)
+が定めています。
+
+```jsonc
+// app/embedded-extensions.jsonの"extensions"配列の1要素
+{
+  "id": "kubohiroyavoicechat",
+  "path": "extensions/kubohiroyavoicechat.js",
+  "mediaType": "text/javascript",
+  "parameters": [],
+  "encoding": "base64",
+  "source": {
+    "provider": "npm",
+    "package": "@kubohiroya/turbowarp-voice-chat",
+    "version": "0.1.0",
+    "artifact": "dist/turbowarp-voice-chat.js",
+    "integrity": "sha256-<インストールされたdist/turbowarp-voice-chat.jsのSHA-256>",
+    "apiManifest": {
+      "artifact": "dist/extension-manifest.json",
+      "path": "extensions/kubohiroyavoicechat.manifest.json",
+      "formatVersion": 1,
+      "integrity": "sha256-<インストールされたdist/extension-manifest.jsonのSHA-256>"
+    }
+  }
+}
+```
+
+`sb3-toolchain extensions update`が、インストール済みのpackageから2つの`integrity`値を記録し、以降の`check`と`build`で
+ネットワークを使わずに検証します。新しいexact versionをインストールしたら、pinを更新してビルドし直します。
+
+```bash
+pnpm add --save-exact @kubohiroya/turbowarp-voice-chat@0.1.0
+sb3-toolchain extensions update app kubohiroyavoicechat --yes
+sb3-toolchain check app
+sb3-toolchain build app --output dist/project.sb3
+```
+
+プロジェクトがこの機能拡張を他のものと一緒に埋め込んでいて、TurboWarpの確認を機能拡張ごとではなく1回にしたい場合は、
+生成されるSB3の中でまとめます。展開したソースには個々の機能拡張が残り、まとめた1つの機能拡張として見えるのは
+ビルドされたSB3だけです。
+
+```bash
+sb3-toolchain extensions bundle app --id projectbundle --name 'Project Extension Bundle' \
+  kubohiroyavoicechat kubohiroyawebspeech --yes
+```
+
+これが変えるのは読み込みの境界であって、安全性の判断そのものではありません。利用者はサンドボックスなしのJavaScriptを、
+1回にまとめて許可します。詳細は
+[`docs/ja/extension-bundles.md`](https://github.com/kubohiroya/sb3-toolchain/blob/main/docs/ja/extension-bundles.md)
+を参照してください。
 
 ## クイックスタート
 

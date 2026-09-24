@@ -23,7 +23,7 @@ A TurboWarp extension for talking with an AI by voice. It combines the OpenAI Re
 - Forces a coffee break: after a set number of minutes the conversation pauses, and it resumes with a fresh session, which also keeps each session's cost down.
 - Reports estimated usage and cost.
 
-Built from [`@kubohiroya/turbowarp-openai-realtime-api`](https://github.com/kubohiroya/turbowarp-openai-realtime-api), [`@kubohiroya/turbowarp-web-speech`](https://github.com/kubohiroya/turbowarp-web-speech), and [`@kubohiroya/turbowarp-named-functions`](https://github.com/kubohiroya/turbowarp-named-functions). Load only this extension; it contains the others.
+Built from the composition APIs of [`@kubohiroya/turbowarp-openai-realtime-api`](https://github.com/kubohiroya/turbowarp-openai-realtime-api), [`@kubohiroya/turbowarp-web-speech`](https://github.com/kubohiroya/turbowarp-web-speech), and [`@kubohiroya/turbowarp-named-functions`](https://github.com/kubohiroya/turbowarp-named-functions): it bundles their logic, not their blocks. See [Relationship to the upstream extensions](#relationship-to-the-upstream-extensions).
 
 ## Requirements and safety
 
@@ -59,6 +59,84 @@ Standalone bundle:
 ```text
 node_modules/@kubohiroya/turbowarp-voice-chat/dist/turbowarp-voice-chat.js
 ```
+
+## Relationship to the upstream extensions
+
+This extension imports the `/composition` entry point of each upstream package, which is a plain
+TypeScript library that registers nothing. The built file therefore calls
+`Scratch.extensions.register` once and declares one extension ID, `kubohiroyavoicechat`, with the
+block set below. It does not contain the `kubohiroyaopenairealtime`, `kubohiroyawebspeech`, or
+`kubohiroyanamedfunctions` extensions.
+
+Two consequences follow.
+
+- **Do not load it alongside those three.** Nothing prevents it, but two extensions would compete
+  for the microphone, the browser speech APIs, the relay pairing, and the `define function` hat, and
+  each extension's realtime session would be billed separately.
+- **A project saved with their blocks does not carry over.** An SB3 stores each block as
+  `<extensionId>_<opcode>`, so scripts built with, say, `kubohiroyawebspeech_speak` do not resolve
+  under this extension, and its block set is not a superset of theirs: `speak`, `startListening`,
+  `callFunction`, `connect`, and others have no equivalent here. Keep using the upstream extension,
+  or rewrite the scripts and migrate the IDs with
+  [`sb3-toolchain extensions migrate-id`](https://github.com/kubohiroya/sb3-toolchain/blob/main/docs/extension-id-migration.md).
+
+To load several extensions as one permission unit, bundle them at the project level rather than
+expecting one extension to embed another. See [Use in an SB3 project](#use-in-an-sb3-project).
+
+## Use in an SB3 project
+
+[`@kubohiroya/sb3-toolchain`](https://github.com/kubohiroya/sb3-toolchain) manages an SB3 as
+Git-diffable source and can keep this extension pinned inside it. Record the npm package as the
+provenance of the embedded JavaScript, and opt in to the API manifest this repository publishes so
+that an update reports block-level breaking changes before replacing the file.
+
+```jsonc
+// one entry of the "extensions" array in app/embedded-extensions.json
+{
+  "id": "kubohiroyavoicechat",
+  "path": "extensions/kubohiroyavoicechat.js",
+  "mediaType": "text/javascript",
+  "parameters": [],
+  "encoding": "base64",
+  "source": {
+    "provider": "npm",
+    "package": "@kubohiroya/turbowarp-voice-chat",
+    "version": "0.1.0",
+    "artifact": "dist/turbowarp-voice-chat.js",
+    "integrity": "sha256-<SHA-256 of the installed dist/turbowarp-voice-chat.js>",
+    "apiManifest": {
+      "artifact": "dist/extension-manifest.json",
+      "path": "extensions/kubohiroyavoicechat.manifest.json",
+      "formatVersion": 1,
+      "integrity": "sha256-<SHA-256 of the installed dist/extension-manifest.json>"
+    }
+  }
+}
+```
+
+`sb3-toolchain extensions update` fills in both `integrity` values from the installed package and
+verifies them offline on every later `check` and `build`. After installing a newer exact version,
+update the pin and rebuild:
+
+```bash
+pnpm add --save-exact @kubohiroya/turbowarp-voice-chat@0.1.0
+sb3-toolchain extensions update app kubohiroyavoicechat --yes
+sb3-toolchain check app
+sb3-toolchain build app --output dist/project.sb3
+```
+
+If the project embeds this extension together with others and you want TurboWarp to ask once instead
+of once per extension, bundle them in the generated SB3. The expanded source keeps the individual
+extensions, and only the built SB3 exposes one composite extension.
+
+```bash
+sb3-toolchain extensions bundle app --id projectbundle --name 'Project Extension Bundle' \
+  kubohiroyavoicechat kubohiroyawebspeech --yes
+```
+
+This changes the loading boundary, not the security decision: the user still authorizes unsandboxed
+JavaScript, once. See
+[`docs/extension-bundles.md`](https://github.com/kubohiroya/sb3-toolchain/blob/main/docs/extension-bundles.md).
 
 ## Quick start
 
@@ -453,6 +531,7 @@ orchestrates them.
 | npm package | `@kubohiroya/turbowarp-voice-chat` | Public package contract |
 | Extension ID | `kubohiroyavoicechat` | Stored in SB3; migration required to change |
 | Composition API | `@kubohiroya/turbowarp-voice-chat/composition` | Public package contract |
+| API manifest | `dist/extension-manifest.json` (format version 1) | Contract from [`@kubohiroya/turbowarp-extension-manifest`](https://github.com/kubohiroya/turbowarp-extension-manifest); read by sb3-toolchain when a project embeds this extension |
 
 ## Development
 
