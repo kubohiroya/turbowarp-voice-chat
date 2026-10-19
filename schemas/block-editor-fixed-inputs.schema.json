@@ -1,0 +1,85 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://kubohiroya.github.io/turbowarp-voice-chat/schemas/block-editor-fixed-inputs.schema.json",
+  "title": "turbowarp-voice-chat fixed editing contracts",
+  "$defs": {
+    "setSpeechInput": {
+      "type": "object",
+      "properties": {
+        "INPUT": {
+          "type": "string",
+          "enum": ["realtime", "browser"]
+        }
+      },
+      "additionalProperties": false
+    },
+    "setSpeechOutput": {
+      "type": "object",
+      "properties": {
+        "OUTPUT": {
+          "type": "string",
+          "enum": ["realtime", "browser", "text"]
+        }
+      },
+      "additionalProperties": false
+    },
+    "setAllowInterruptions": {
+      "type": "object",
+      "properties": {
+        "ONOFF": {
+          "type": "string",
+          "enum": ["off", "on"]
+        }
+      },
+      "additionalProperties": false
+    },
+    "setCoffeeBreak": {
+      "type": "object",
+      "properties": {
+        "TALK": {
+          "type": "number",
+          "minimum": 0
+        },
+        "BREAK": {
+          "type": "number",
+          "minimum": 0
+        },
+        "AFTER": {
+          "type": "string",
+          "enum": ["resume", "stop"]
+        }
+      },
+      "additionalProperties": false
+    },
+    "defineFunction": {
+      "type": "object",
+      "properties": {
+        "EXPORT": {
+          "type": "string",
+          "enum": ["tool", "none"]
+        }
+      },
+      "additionalProperties": false
+    },
+    "usageValue": {
+      "type": "object",
+      "properties": {
+        "FIELD": {
+          "type": "string",
+          "enum": [
+            "costUSD",
+            "responses",
+            "inputTokens",
+            "outputTokens",
+            "cachedInputTokens",
+            "textInputTokens",
+            "audioInputTokens",
+            "textOutputTokens",
+            "audioOutputTokens"
+          ]
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

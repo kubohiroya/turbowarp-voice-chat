@@ -14,6 +14,8 @@ type Util = BlockUtilityLike & {
 };
 /** Block surface over the voice-chat composition. */
 export declare class VoiceChatExtension implements TurboWarpExtension {
+    private readonly fixedEditorRuntime;
+    private fixedEditorsDispose;
     private lastErrorMessage;
     private readonly voice;
     constructor(deps: VoiceChatExtensionDependencies & {

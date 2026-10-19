@@ -1,3 +1,4 @@
+import {registerFixedInputEditors} from './fixed-input-editors.js';
 import {
   parseJsonOrText,
   readArgumentPath,
@@ -63,10 +64,14 @@ const USAGE_FIELDS: Record<string, (usage: UsageTotals) => number> = {
 
 /** Block surface over the voice-chat composition. */
 export class VoiceChatExtension implements TurboWarpExtension {
+  private readonly fixedEditorRuntime: unknown;
+  private fixedEditorsDispose: (() => void) | undefined;
+
   private lastErrorMessage = '';
   private readonly voice: VoiceChatComposition;
 
   public constructor(deps: VoiceChatExtensionDependencies & {runtime: RuntimeLike}) {
+    this.fixedEditorRuntime = deps.runtime;
     this.voice = createVoiceChat({...deps, functionHatOpcode: DEFINE_FUNCTION_OPCODE});
     const {runtime} = deps;
     this.voice.chat.subscribe((event) => {
@@ -81,7 +86,7 @@ export class VoiceChatExtension implements TurboWarpExtension {
   }
 
   public getInfo(): Record<string, unknown> {
-    return {
+    const info = {
       id: extensionConfig.id,
       name: Scratch.translate(definitions.extensionName),
       docsURI: extensionConfig.docsURI,
@@ -94,6 +99,8 @@ export class VoiceChatExtension implements TurboWarpExtension {
         ])
       )
     };
+    this.fixedEditorsDispose ??= registerFixedInputEditors(Scratch, this.fixedEditorRuntime, info.blocks);
+    return info;
   }
 
   // ---- setup --------------------------------------------------------------------------------

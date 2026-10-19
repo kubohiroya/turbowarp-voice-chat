@@ -546,3 +546,16 @@ pnpm check
 ## License
 
 [Mozilla Public License 2.0](LICENSE) (SPDX: `MPL-2.0`).
+
+## Fixed input editing
+
+With a compatible TurboWarp GUI, enable fixed-input forms to edit only standard literal fields. Numbers use complete finite JSON number tokens; menu fields use existing choices. Connected reporters and unavailable fields stay read-only and are never evaluated. Saving an unchanged form preserves exact existing raw values, including legacy spellings and unknown choices. Invalid drafts stay in the same editing session; cancel, project/target replacement, or block removal discards them. Disabling the GUI feature flag restores native field editing. This form does not run blocks, open network/audio/key/QR sessions, resolve names, or edit Schema arguments. Coffee-break minutes must be nonnegative and remain finite after multiplication by 60.
+
+Canonical contracts: `schemas/block-editor-fixed-inputs.schema.json`; codecs and optional registration: `src/fixed-input-editors.ts`. These contracts describe new fixed-field candidates; they do not redefine all runtime data. The GUI integration is optional and existing standalone/composition APIs stay available.
+
+- `setSpeechInput`: INPUT — [block documentation](https://kubohiroya.github.io/turbowarp-voice-chat/#block-setSpeechInput).
+- `setSpeechOutput`: OUTPUT — [block documentation](https://kubohiroya.github.io/turbowarp-voice-chat/#block-setSpeechOutput).
+- `setAllowInterruptions`: ONOFF — [block documentation](https://kubohiroya.github.io/turbowarp-voice-chat/#block-setAllowInterruptions).
+- `setCoffeeBreak`: TALK, BREAK, AFTER — [block documentation](https://kubohiroya.github.io/turbowarp-voice-chat/#block-setCoffeeBreak).
+- `defineFunction`: EXPORT — [block documentation](https://kubohiroya.github.io/turbowarp-voice-chat/#block-defineFunction).
+- `usageValue`: FIELD — [block documentation](https://kubohiroya.github.io/turbowarp-voice-chat/#block-usageValue).
