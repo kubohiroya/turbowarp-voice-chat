@@ -51,7 +51,7 @@ Built from the composition APIs of [`@kubohiroya/turbowarp-openai-realtime-api`]
 ### npm package
 
 ```bash
-pnpm add --save-exact @kubohiroya/turbowarp-voice-chat@0.1.0
+pnpm add --save-exact @kubohiroya/turbowarp-voice-chat@0.1.1
 ```
 
 Standalone bundle:
@@ -119,7 +119,7 @@ verifies them offline on every later `check` and `build`. After installing a new
 update the pin and rebuild:
 
 ```bash
-pnpm add --save-exact @kubohiroya/turbowarp-voice-chat@0.1.0
+pnpm add --save-exact @kubohiroya/turbowarp-voice-chat@0.1.1
 sb3-toolchain extensions update app kubohiroyavoicechat --yes
 sb3-toolchain check app
 sb3-toolchain build app --output dist/project.sb3

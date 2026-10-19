@@ -1,6 +1,6 @@
 {
   "name": "@kubohiroya/turbowarp-voice-chat",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Voice chat with an AI for TurboWarp: combines OpenAI Realtime, browser speech, named functions as tools, and a forced coffee break.",
   "author": "Hiroya Kubo <hiroya@cuc.ac.jp>",
   "license": "MPL-2.0",
@@ -56,8 +56,8 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.39.5",
-    "@kubohiroya/turbowarp-extension-manifest": "0.2.0",
-    "@kubohiroya/vite-plugin-turbowarp-extension": "0.3.0",
+    "@kubohiroya/turbowarp-extension-manifest": "0.3.2",
+    "@kubohiroya/vite-plugin-turbowarp-extension": "0.6.1",
     "@types/node": "^24.13.3",
     "eslint": "^9.39.5",
     "jiti": "^2.7.0",
@@ -65,7 +65,7 @@
     "typescript-eslint": "^8.66.0",
     "vite": "^8.2.2",
     "vitest": "^5.0.0",
-    "@kubohiroya/turbowarp-extension-data-editor": "github:kubohiroya/turbowarp-extension-data-editor#485f0e550e622235624b5e9176820161aeeba252"
+    "@kubohiroya/turbowarp-extension-data-editor": "0.2.1"
   },
   "exports": {
     "./composition": {
@@ -76,8 +76,14 @@
     "./package.json": "./package.json"
   },
   "dependencies": {
-    "@kubohiroya/turbowarp-named-functions": "0.1.0",
-    "@kubohiroya/turbowarp-openai-realtime-api": "0.1.0",
-    "@kubohiroya/turbowarp-web-speech": "0.1.0"
+    "@kubohiroya/turbowarp-named-functions": "0.1.1",
+    "@kubohiroya/turbowarp-openai-realtime-api": "0.1.1",
+    "@kubohiroya/turbowarp-web-speech": "0.1.1"
+  },
+  "gitHead": "6f96ab041fc409a8b0fe16e226b3bf8c0d28f202",
+  "x-turbowarp-source": {
+    "revision": "6f96ab041fc409a8b0fe16e226b3bf8c0d28f202",
+    "revisionRole": "base-commit",
+    "sourceState": "local-release-overlay"
   }
 }
