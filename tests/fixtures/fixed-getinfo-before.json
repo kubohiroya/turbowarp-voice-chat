@@ -1,0 +1,402 @@
+{
+  "id": "kubohiroyavoicechat",
+  "name": "Voice Chat",
+  "docsURI": "https://kubohiroya.github.io/turbowarp-voice-chat/",
+  "blockIconURI": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0OCA0OCI+PHBhdGggZD0iTTYgOGgyNGE0IDQgMCAwIDEgNCA0djEyYTQgNCAwIDAgMS00IDRIMTZsLTcgNnYtNkg2YTQgNCAwIDAgMS00LTRWMTJhNCA0IDAgMCAxIDQtNHoiIGZpbGw9IiMxMEEzN0YiLz48cGF0aCBkPSJNNDIgMThoLTR2MTBhNiA2IDAgMCAxLTYgNkgyMHYyYTQgNCAwIDAgMCA0IDRoMTBsNiA1di01aDJhNCA0IDAgMCAwIDQtNFYyMmE0IDQgMCAwIDAtNC00eiIgZmlsbD0iI0YyOUMzOCIvPjxwYXRoIGQ9Ik0xMSAxOGgxNE0xMSAyM2g5IiBzdHJva2U9IiNmZmYiIHN0cm9rZS13aWR0aD0iMyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PC9zdmc+",
+  "blocks": [
+    {
+      "opcode": "configureRelay",
+      "blockType": "command",
+      "text": "configure local relay [ENDPOINT]",
+      "arguments": {
+        "ENDPOINT": {
+          "type": "string",
+          "defaultValue": "http://127.0.0.1:8787"
+        }
+      }
+    },
+    {
+      "opcode": "pairRelay",
+      "blockType": "command",
+      "text": "pair local relay with one-time code [CODE]",
+      "arguments": {
+        "CODE": {
+          "type": "string",
+          "defaultValue": "00000000"
+        }
+      }
+    },
+    {
+      "opcode": "isRelayPaired",
+      "blockType": "Boolean",
+      "text": "local relay paired?",
+      "arguments": {}
+    },
+    {
+      "opcode": "setModel",
+      "blockType": "command",
+      "text": "set AI model to [MODEL]",
+      "arguments": {
+        "MODEL": {
+          "type": "string",
+          "defaultValue": "gpt-realtime-2.1-mini",
+          "menu": "models"
+        }
+      }
+    },
+    {
+      "opcode": "setInstructions",
+      "blockType": "command",
+      "text": "set AI instructions to [TEXT]",
+      "arguments": {
+        "TEXT": {
+          "type": "string",
+          "defaultValue": "You are a friendly character in a game. Answer in one or two short sentences."
+        }
+      }
+    },
+    {
+      "opcode": "setSpeechInput",
+      "blockType": "command",
+      "text": "hear my voice with [INPUT]",
+      "arguments": {
+        "INPUT": {
+          "type": "string",
+          "defaultValue": "realtime",
+          "menu": "inputs"
+        }
+      }
+    },
+    {
+      "opcode": "setSpeechOutput",
+      "blockType": "command",
+      "text": "speak replies with [OUTPUT]",
+      "arguments": {
+        "OUTPUT": {
+          "type": "string",
+          "defaultValue": "realtime",
+          "menu": "outputs"
+        }
+      }
+    },
+    {
+      "opcode": "setLanguage",
+      "blockType": "command",
+      "text": "set browser speech language to [LANG]",
+      "arguments": {
+        "LANG": {
+          "type": "string",
+          "defaultValue": "ja-JP",
+          "menu": "languages"
+        }
+      }
+    },
+    {
+      "opcode": "setRealtimeVoice",
+      "blockType": "command",
+      "text": "set AI voice to [VOICE]",
+      "arguments": {
+        "VOICE": {
+          "type": "string",
+          "defaultValue": "marin",
+          "menu": "voices"
+        }
+      }
+    },
+    {
+      "opcode": "setAllowInterruptions",
+      "blockType": "command",
+      "text": "allow interrupting the AI [ONOFF]",
+      "arguments": {
+        "ONOFF": {
+          "type": "string",
+          "defaultValue": "off",
+          "menu": "onOff"
+        }
+      }
+    },
+    {
+      "opcode": "setCoffeeBreak",
+      "blockType": "command",
+      "text": "force a coffee break every [TALK] minutes for [BREAK] minutes, then [AFTER]",
+      "arguments": {
+        "TALK": {
+          "type": "number",
+          "defaultValue": "10"
+        },
+        "BREAK": {
+          "type": "number",
+          "defaultValue": "5"
+        },
+        "AFTER": {
+          "type": "string",
+          "defaultValue": "resume",
+          "menu": "afterBreak"
+        }
+      }
+    },
+    {
+      "opcode": "takeBreakNow",
+      "blockType": "command",
+      "text": "take a coffee break now",
+      "arguments": {}
+    },
+    {
+      "opcode": "endBreakNow",
+      "blockType": "command",
+      "text": "end the coffee break now",
+      "arguments": {}
+    },
+    {
+      "opcode": "whenBreakStarts",
+      "blockType": "hat",
+      "text": "when coffee break starts",
+      "arguments": {},
+      "isEdgeActivated": false
+    },
+    {
+      "opcode": "whenBreakEnds",
+      "blockType": "hat",
+      "text": "when coffee break ends",
+      "arguments": {},
+      "isEdgeActivated": false
+    },
+    {
+      "opcode": "isOnBreak",
+      "blockType": "Boolean",
+      "text": "on coffee break?",
+      "arguments": {}
+    },
+    {
+      "opcode": "breakSecondsLeft",
+      "blockType": "reporter",
+      "text": "coffee break seconds left",
+      "arguments": {}
+    },
+    {
+      "opcode": "startConversation",
+      "blockType": "command",
+      "text": "start conversation",
+      "arguments": {}
+    },
+    {
+      "opcode": "endConversation",
+      "blockType": "command",
+      "text": "end conversation",
+      "arguments": {}
+    },
+    {
+      "opcode": "isActive",
+      "blockType": "Boolean",
+      "text": "in conversation?",
+      "arguments": {}
+    },
+    {
+      "opcode": "conversationStatus",
+      "blockType": "reporter",
+      "text": "conversation status",
+      "arguments": {}
+    },
+    {
+      "opcode": "sendText",
+      "blockType": "command",
+      "text": "say [TEXT] to the AI",
+      "arguments": {
+        "TEXT": {
+          "type": "string",
+          "defaultValue": "Hello!"
+        }
+      }
+    },
+    {
+      "opcode": "whenUserSays",
+      "blockType": "hat",
+      "text": "when I say something",
+      "arguments": {},
+      "isEdgeActivated": false
+    },
+    {
+      "opcode": "userSaid",
+      "blockType": "reporter",
+      "text": "what I said",
+      "arguments": {}
+    },
+    {
+      "opcode": "whenAiReplies",
+      "blockType": "hat",
+      "text": "when the AI replies",
+      "arguments": {},
+      "isEdgeActivated": false
+    },
+    {
+      "opcode": "aiReply",
+      "blockType": "reporter",
+      "text": "AI reply",
+      "arguments": {}
+    },
+    {
+      "opcode": "defineFunction",
+      "blockType": "hat",
+      "text": "define function [NAME] description [DESCRIPTION] args schema [SCHEMA] export as [EXPORT]",
+      "arguments": {
+        "NAME": {
+          "type": "string",
+          "defaultValue": "get_score"
+        },
+        "DESCRIPTION": {
+          "type": "string",
+          "defaultValue": "Returns the player's current score."
+        },
+        "SCHEMA": {
+          "type": "string",
+          "defaultValue": "{\"type\":\"object\",\"properties\":{}}"
+        },
+        "EXPORT": {
+          "type": "string",
+          "defaultValue": "tool",
+          "menu": "exportModes"
+        }
+      },
+      "isEdgeActivated": false
+    },
+    {
+      "opcode": "functionArgument",
+      "blockType": "reporter",
+      "text": "function argument [PATH]",
+      "arguments": {
+        "PATH": {
+          "type": "string",
+          "defaultValue": "city"
+        }
+      }
+    },
+    {
+      "opcode": "functionArgumentsJson",
+      "blockType": "reporter",
+      "text": "function arguments JSON",
+      "arguments": {}
+    },
+    {
+      "opcode": "returnValue",
+      "blockType": "command",
+      "text": "return [VALUE]",
+      "arguments": {
+        "VALUE": {
+          "type": "string",
+          "defaultValue": "{\"score\":10}"
+        }
+      }
+    },
+    {
+      "opcode": "usageValue",
+      "blockType": "reporter",
+      "text": "AI usage [FIELD]",
+      "arguments": {
+        "FIELD": {
+          "type": "string",
+          "defaultValue": "costUSD",
+          "menu": "usageFields"
+        }
+      }
+    },
+    {
+      "opcode": "resetUsage",
+      "blockType": "command",
+      "text": "reset AI usage",
+      "arguments": {}
+    },
+    {
+      "opcode": "lastError",
+      "blockType": "reporter",
+      "text": "last voice chat error",
+      "arguments": {}
+    }
+  ],
+  "menus": {
+    "models": {
+      "acceptReporters": true,
+      "items": [
+        "gpt-realtime-2.1-mini",
+        "gpt-realtime-2.1"
+      ]
+    },
+    "inputs": {
+      "acceptReporters": false,
+      "items": [
+        "realtime",
+        "browser"
+      ]
+    },
+    "outputs": {
+      "acceptReporters": false,
+      "items": [
+        "realtime",
+        "browser",
+        "text"
+      ]
+    },
+    "languages": {
+      "acceptReporters": true,
+      "items": [
+        "ja-JP",
+        "en-US",
+        "en-GB",
+        "zh-CN",
+        "ko-KR",
+        "fr-FR",
+        "de-DE",
+        "es-ES"
+      ]
+    },
+    "voices": {
+      "acceptReporters": true,
+      "items": [
+        "alloy",
+        "ash",
+        "ballad",
+        "cedar",
+        "coral",
+        "echo",
+        "marin",
+        "sage",
+        "shimmer",
+        "verse"
+      ]
+    },
+    "onOff": {
+      "acceptReporters": false,
+      "items": [
+        "off",
+        "on"
+      ]
+    },
+    "afterBreak": {
+      "acceptReporters": false,
+      "items": [
+        "resume",
+        "stop"
+      ]
+    },
+    "exportModes": {
+      "acceptReporters": false,
+      "items": [
+        "tool",
+        "none"
+      ]
+    },
+    "usageFields": {
+      "acceptReporters": false,
+      "items": [
+        "costUSD",
+        "responses",
+        "inputTokens",
+        "outputTokens",
+        "cachedInputTokens",
+        "textInputTokens",
+        "audioInputTokens",
+        "textOutputTokens",
+        "audioOutputTokens"
+      ]
+    }
+  }
+}

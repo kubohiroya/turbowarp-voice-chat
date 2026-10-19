@@ -19,8 +19,350 @@
   	docsURI: "https://kubohiroya.github.io/turbowarp-voice-chat/",
   	blockIconURI: "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0OCA0OCI+PHBhdGggZD0iTTYgOGgyNGE0IDQgMCAwIDEgNCA0djEyYTQgNCAwIDAgMS00IDRIMTZsLTcgNnYtNkg2YTQgNCAwIDAgMS00LTRWMTJhNCA0IDAgMCAxIDQtNHoiIGZpbGw9IiMxMEEzN0YiLz48cGF0aCBkPSJNNDIgMThoLTR2MTBhNiA2IDAgMCAxLTYgNkgyMHYyYTQgNCAwIDAgMCA0IDRoMTBsNiA1di01aDJhNCA0IDAgMCAwIDQtNFYyMmE0IDQgMCAwIDAtNC00eiIgZmlsbD0iI0YyOUMzOCIvPjxwYXRoIGQ9Ik0xMSAxOGgxNE0xMSAyM2g5IiBzdHJva2U9IiNmZmYiIHN0cm9rZS13aWR0aD0iMyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PC9zdmc+"
   };
+  var block_editor_fixed_inputs_schema_default = {
+  	$schema: "http://json-schema.org/draft-07/schema#",
+  	$id: "https://kubohiroya.github.io/turbowarp-voice-chat/schemas/block-editor-fixed-inputs.schema.json",
+  	title: "turbowarp-voice-chat fixed editing contracts",
+  	$defs: {
+  		"setSpeechInput": {
+  			"type": "object",
+  			"properties": { "INPUT": {
+  				"type": "string",
+  				"enum": ["realtime", "browser"]
+  			} },
+  			"additionalProperties": false
+  		},
+  		"setSpeechOutput": {
+  			"type": "object",
+  			"properties": { "OUTPUT": {
+  				"type": "string",
+  				"enum": [
+  					"realtime",
+  					"browser",
+  					"text"
+  				]
+  			} },
+  			"additionalProperties": false
+  		},
+  		"setAllowInterruptions": {
+  			"type": "object",
+  			"properties": { "ONOFF": {
+  				"type": "string",
+  				"enum": ["off", "on"]
+  			} },
+  			"additionalProperties": false
+  		},
+  		"setCoffeeBreak": {
+  			"type": "object",
+  			"properties": {
+  				"TALK": {
+  					"type": "number",
+  					"minimum": 0
+  				},
+  				"BREAK": {
+  					"type": "number",
+  					"minimum": 0
+  				},
+  				"AFTER": {
+  					"type": "string",
+  					"enum": ["resume", "stop"]
+  				}
+  			},
+  			"additionalProperties": false
+  		},
+  		"defineFunction": {
+  			"type": "object",
+  			"properties": { "EXPORT": {
+  				"type": "string",
+  				"enum": ["tool", "none"]
+  			} },
+  			"additionalProperties": false
+  		},
+  		"usageValue": {
+  			"type": "object",
+  			"properties": { "FIELD": {
+  				"type": "string",
+  				"enum": [
+  					"costUSD",
+  					"responses",
+  					"inputTokens",
+  					"outputTokens",
+  					"cachedInputTokens",
+  					"textInputTokens",
+  					"audioInputTokens",
+  					"textOutputTokens",
+  					"audioOutputTokens"
+  				]
+  			} },
+  			"additionalProperties": false
+  		}
+  	}
+  };
   //#endregion
-  //#region node_modules/.pnpm/@kubohiroya+turbowarp-named-functions@0.1.0/node_modules/@kubohiroya/turbowarp-named-functions/dist/composition.js
+  //#region src/fixed-input-editors.ts
+  var contracts = block_editor_fixed_inputs_schema_default.$defs;
+  var repository = "turbowarp-voice-chat";
+  var extensionId = "kubohiroyavoicechat";
+  var token = /^-?(?:0|[1-9][0-9]*)(?:\.[0-9]+)?(?:[eE][+-]?[0-9]+)?$/u;
+  function readNumber(value) {
+  	if (typeof value !== "string" && typeof value !== "number") throw new TypeError("Invalid numeric projection.");
+  	if (typeof value === "string" && value.trim() === "") throw new TypeError("Existing blank field is readonly.");
+  	const number = Number(value);
+  	if (!Number.isFinite(number)) throw new TypeError("Existing nonfinite field is readonly.");
+  	return number;
+  }
+  function newNumberToken(value) {
+  	if (typeof value === "number") {
+  		if (!Number.isFinite(value)) throw new TypeError("Invalid new number.");
+  		return Object.is(value, -0) ? "-0" : String(value);
+  	}
+  	if (typeof value !== "string" || !token.test(value.trim()) || !Number.isFinite(Number(value))) throw new TypeError("Invalid new number.");
+  	return value.trim();
+  }
+  function existingChoice(_opcode, value) {
+  	if (typeof value !== "string") throw new TypeError("Invalid string projection.");
+  	return value;
+  }
+  function candidateValid(opcode, argument, schema, value) {
+  	if (schema.type === "number" || schema.type === "integer") {
+  		let number;
+  		try {
+  			number = readNumber(value);
+  		} catch {
+  			return false;
+  		}
+  		if (schema.type === "integer" && !Number.isInteger(number)) return false;
+  		if (schema.minimum !== void 0 && number < schema.minimum) return false;
+  		if (schema.maximum !== void 0 && number > schema.maximum) return false;
+  		if (schema.exclusiveMinimum !== void 0 && number <= schema.exclusiveMinimum) return false;
+  		if (schema.enum && !schema.enum.includes(number)) return false;
+  		if (opcode === "setCoffeeBreak" && ["TALK", "BREAK"].includes(argument) && !Number.isFinite(number * 60)) return false;
+  		return true;
+  	}
+  	return typeof value === "string" && schema.enum.includes(value);
+  }
+  function fixedInputEditorOptions() {
+  	return Object.entries(contracts).map(([opcode, contract]) => ({
+  		apiVersion: 1,
+  		extensionId,
+  		editorId: `${extensionId}.fixed.${opcode}`,
+  		opcodes: [`${extensionId}_${opcode}`],
+  		contractId: `${repository}.${opcode}.fixed`,
+  		contractRevision: "fixed-inputs-v1",
+  		validationContext: () => ({
+  			consumerId: repository,
+  			nowMs: 0,
+  			settings: null
+  		}),
+  		bindings: Object.entries(contract.properties).map(([argument, schema]) => {
+  			const numeric = schema.type === "number" || schema.type === "integer";
+  			const source = {
+  				repository,
+  				path: "schemas/block-editor-fixed-inputs.schema.json",
+  				symbol: `/$defs/${opcode}/properties/${argument}`
+  			};
+  			return {
+  				argument,
+  				schemaBundle: {
+  					identity: {
+  						ownerId: repository,
+  						contractId: `${opcode}.${argument}`,
+  						revision: "fixed-inputs-v1",
+  						variantId: "fixed"
+  					},
+  					dialect: "draft-07",
+  					root: {
+  						retrievalUri: `${block_editor_fixed_inputs_schema_default.$id}?binding=${opcode}.${argument}`,
+  						document: schema,
+  						artifact: {
+  							role: "canonical-schema",
+  							source
+  						}
+  					},
+  					resources: [],
+  					provenance: {
+  						canonicalSources: [
+  							source,
+  							{
+  								repository,
+  								path: "src/block-definitions.json"
+  							},
+  							{
+  								repository,
+  								path: "src/extension.ts",
+  								symbol: opcode
+  							}
+  						],
+  						generatedFiles: [],
+  						referenceSchemas: [],
+  						generationSources: []
+  					}
+  				},
+  				control: numeric ? { kind: "number" } : {
+  					kind: "enum",
+  					choices: schema.enum.map((value) => ({
+  						value,
+  						label: String(value)
+  					}))
+  				},
+  				read: (value) => numeric ? readNumber(value) : existingChoice(opcode, value),
+  				encode: (value) => {
+  					if (numeric) return newNumberToken(value);
+  					if (typeof value !== "string" || !schema.enum.includes(value)) throw new TypeError("Invalid new enum value.");
+  					return value;
+  				},
+  				validateCandidate: (value) => candidateValid(opcode, argument, schema, value) ? [] : [{
+  					path: argument,
+  					message: "Check this value before saving."
+  				}]
+  			};
+  		})
+  	}));
+  }
+  /** Register only visible static contracts; ordinary composition consumers load no editor runtime. */
+  function registerFixedInputEditors(scratch, runtime, visibleBlocks) {
+  	const api = scratch.gui?.blockEditors;
+  	if (api?.apiVersion !== 1 || typeof api.registerFixedInputEditor !== "function") return void 0;
+  	const visibleOpcodes = new Set(visibleBlocks.flatMap((block) => {
+  		if (typeof block !== "object" || block === null || !("opcode" in block)) return [];
+  		return typeof block.opcode === "string" ? [block.opcode] : [];
+  	}));
+  	const events = runtime;
+  	const removers = [];
+  	let active = true;
+  	const dispose = () => {
+  		if (!active) return;
+  		active = false;
+  		events?.off?.("RUNTIME_DISPOSED", dispose);
+  		for (const remove of removers.splice(0).reverse()) remove();
+  	};
+  	try {
+  		for (const options of fixedInputEditorOptions()) if (options.opcodes.some((opcode) => visibleOpcodes.has(opcode.slice(20)))) removers.push(api.registerFixedInputEditor.call(api, options));
+  		events?.on?.("RUNTIME_DISPOSED", dispose);
+  	} catch (error) {
+  		dispose();
+  		throw error;
+  	}
+  	return dispose;
+  }
+  //#endregion
+  //#region node_modules/.pnpm/@kubohiroya+turbowarp-named-functions@0.1.1_react@18.3.1/node_modules/@kubohiroya/turbowarp-named-functions/dist/composition.js
+  /**
+  * A small JSON Schema validator for function arguments and returns. It interprets the schema at run time and
+  * never generates code, so it also works where `eval` is unavailable (for example Cloudflare Workers).
+  *
+  * Supported keywords: type, properties, required, additionalProperties (boolean), items, enum,
+  * const, minimum, maximum, minLength, maxLength, minItems, maxItems. Other keywords, such as
+  * description and title, are ignored.
+  */
+  function validateAgainstSchema(value, schema, path = "$") {
+  	const rule = asRecord$2(schema);
+  	if (!rule) throw new Error(`${path} must be a JSON Schema object`);
+  	assertSchemaNode(rule, path);
+  	return validateValue(value, rule, path);
+  }
+  /** Reject malformed schemas before a function definition or call can use them. */
+  function validateSchemaDefinition(schema, label = "schema") {
+  	const rule = asRecord$2(schema);
+  	if (!rule) throw new Error(`${label} must be a JSON object`);
+  	assertSchemaNode(rule, label);
+  }
+  function validateValue(value, rule, path) {
+  	const errors = [];
+  	if (rule.type !== void 0) {
+  		const types = Array.isArray(rule.type) ? rule.type : [rule.type];
+  		if (!types.some((type) => matchesType(value, type))) return [`${path} must be ${types.join(" or ")}`];
+  	}
+  	if (Array.isArray(rule.enum) && !rule.enum.some((candidate) => deepEqual(candidate, value))) errors.push(`${path} must be one of ${rule.enum.map((item) => JSON.stringify(item)).join(", ")}`);
+  	if ("const" in rule && !deepEqual(rule.const, value)) errors.push(`${path} must be ${JSON.stringify(rule.const)}`);
+  	if (typeof value === "number") {
+  		if (typeof rule.minimum === "number" && value < rule.minimum) errors.push(`${path} must be >= ${rule.minimum}`);
+  		if (typeof rule.maximum === "number" && value > rule.maximum) errors.push(`${path} must be <= ${rule.maximum}`);
+  	}
+  	if (typeof value === "string") {
+  		const length = [...value].length;
+  		if (typeof rule.minLength === "number" && length < rule.minLength) errors.push(`${path} must have at least ${rule.minLength} characters`);
+  		if (typeof rule.maxLength === "number" && length > rule.maxLength) errors.push(`${path} must have at most ${rule.maxLength} characters`);
+  	}
+  	if (Array.isArray(value)) {
+  		if (typeof rule.minItems === "number" && value.length < rule.minItems) errors.push(`${path} must have at least ${rule.minItems} items`);
+  		if (typeof rule.maxItems === "number" && value.length > rule.maxItems) errors.push(`${path} must have at most ${rule.maxItems} items`);
+  		if (rule.items !== void 0) value.forEach((item, index) => errors.push(...validateValue(item, rule.items, `${path}[${index}]`)));
+  	}
+  	const object = asRecord$2(value);
+  	if (object) {
+  		const properties = asRecord$2(rule.properties) ?? {};
+  		if (Array.isArray(rule.required)) {
+  			for (const name of rule.required) if (typeof name === "string" && !Object.hasOwn(object, name)) errors.push(`${path}.${name} is required`);
+  		}
+  		for (const [name, child] of Object.entries(object)) if (Object.hasOwn(properties, name)) errors.push(...validateValue(child, properties[name], `${path}.${name}`));
+  		else if (rule.additionalProperties === false) errors.push(`${path}.${name} is not allowed`);
+  	}
+  	return errors;
+  }
+  function assertSchemaNode(rule, path) {
+  	const validTypes = /* @__PURE__ */ new Set([
+  		"object",
+  		"array",
+  		"string",
+  		"number",
+  		"integer",
+  		"boolean",
+  		"null"
+  	]);
+  	if (rule.type !== void 0) {
+  		const types = Array.isArray(rule.type) ? rule.type : [rule.type];
+  		if (types.length === 0 || types.some((type) => typeof type !== "string" || !validTypes.has(type))) throw new Error(`${path}.type must be a supported JSON Schema type or non-empty type array`);
+  	}
+  	if (rule.properties !== void 0) {
+  		const properties = asRecord$2(rule.properties);
+  		if (!properties) throw new Error(`${path}.properties must be an object`);
+  		for (const [name, child] of Object.entries(properties)) {
+  			const childRule = asRecord$2(child);
+  			if (!childRule) throw new Error(`${path}.properties.${name} must be a JSON Schema object`);
+  			assertSchemaNode(childRule, `${path}.properties.${name}`);
+  		}
+  	}
+  	if (rule.required !== void 0 && (!Array.isArray(rule.required) || rule.required.some((name) => typeof name !== "string"))) throw new Error(`${path}.required must be an array of strings`);
+  	if (rule.additionalProperties !== void 0 && typeof rule.additionalProperties !== "boolean") throw new Error(`${path}.additionalProperties must be a boolean`);
+  	if (rule.items !== void 0) {
+  		const items = asRecord$2(rule.items);
+  		if (!items) throw new Error(`${path}.items must be a JSON Schema object`);
+  		assertSchemaNode(items, `${path}.items`);
+  	}
+  	if (rule.enum !== void 0 && (!Array.isArray(rule.enum) || rule.enum.length === 0)) throw new Error(`${path}.enum must be a non-empty array`);
+  	for (const keyword of ["minimum", "maximum"]) if (rule[keyword] !== void 0 && (typeof rule[keyword] !== "number" || !Number.isFinite(rule[keyword]))) throw new Error(`${path}.${keyword} must be a finite number`);
+  	for (const keyword of [
+  		"minLength",
+  		"maxLength",
+  		"minItems",
+  		"maxItems"
+  	]) {
+  		const value = rule[keyword];
+  		if (value !== void 0 && (typeof value !== "number" || !Number.isInteger(value) || value < 0)) throw new Error(`${path}.${keyword} must be a non-negative integer`);
+  	}
+  	if (typeof rule.minimum === "number" && typeof rule.maximum === "number" && rule.minimum > rule.maximum) throw new Error(`${path}.minimum cannot exceed maximum`);
+  	if (typeof rule.minLength === "number" && typeof rule.maxLength === "number" && rule.minLength > rule.maxLength) throw new Error(`${path}.minLength cannot exceed maxLength`);
+  	if (typeof rule.minItems === "number" && typeof rule.maxItems === "number" && rule.minItems > rule.maxItems) throw new Error(`${path}.minItems cannot exceed maxItems`);
+  }
+  function matchesType(value, type) {
+  	switch (type) {
+  		case "object": return asRecord$2(value) !== null;
+  		case "array": return Array.isArray(value);
+  		case "string": return typeof value === "string";
+  		case "number": return typeof value === "number" && Number.isFinite(value);
+  		case "integer": return typeof value === "number" && Number.isInteger(value);
+  		case "boolean": return typeof value === "boolean";
+  		case "null": return value === null;
+  		default: return false;
+  	}
+  }
+  function deepEqual(left, right) {
+  	return JSON.stringify(left) === JSON.stringify(right);
+  }
+  function asRecord$2(value) {
+  	return typeof value === "object" && value !== null && !Array.isArray(value) ? value : null;
+  }
   var FunctionDispatcher = class {
   	constructor(runtime, options) {
   		this.runtime = runtime;
@@ -42,7 +384,7 @@
   	* Starts a named function. `caller` is the thread of the block making the call, if any; it is used
   	* to detect reentrant calls.
   	*/
-  	invoke(name, args, caller) {
+  	invoke(name, args, caller, returnSchema) {
   		if (!this.options.knownNames().has(name)) return Promise.reject(/* @__PURE__ */ new Error(`Unknown function: ${name}`));
   		const parentChain = caller ? this.byThread.get(caller)?.chain ?? [] : [];
   		if (parentChain.includes(name)) return Promise.reject(/* @__PURE__ */ new Error(`Reentrant call: ${[...parentChain, name].join(" -> ")}. Use a custom block for recursion.`));
@@ -50,6 +392,7 @@
   			const invocation = {
   				name,
   				args,
+  				...returnSchema === void 0 ? {} : { returnSchema },
   				chain: [...parentChain, name],
   				resolve,
   				reject,
@@ -80,7 +423,7 @@
   	returnFrom(thread, value) {
   		const invocation = thread ? this.byThread.get(thread) : void 0;
   		if (!invocation) throw new Error("return can only be used inside a running function.");
-  		this.settle(invocation, null, value);
+  		this.settleWithValue(invocation, value);
   	}
   	cancelAll(reason) {
   		for (const invocation of [...this.queue, ...this.running.values()]) this.settle(invocation, new Error(reason));
@@ -109,7 +452,7 @@
   		this.step += 1;
   		const starting = this.starting;
   		if (starting && this.step - starting.startedAtStep > 2) this.settle(starting, /* @__PURE__ */ new Error(`Function ${starting.name} did not start. Is its script already running?`));
-  		for (const invocation of this.running.values()) if (invocation.thread && !this.runtime.threads.includes(invocation.thread)) this.settle(invocation, null, null);
+  		for (const invocation of this.running.values()) if (invocation.thread && !this.runtime.threads.includes(invocation.thread)) this.settleWithValue(invocation, null);
   		this.pump();
   	}
   	settle(invocation, error, value) {
@@ -123,6 +466,16 @@
   		if (this.starting === invocation) this.starting = null;
   		if (error) invocation.reject(error);
   		else invocation.resolve(value);
+  	}
+  	settleWithValue(invocation, value) {
+  		if (invocation.returnSchema !== void 0) {
+  			const errors = validateAgainstSchema(value, invocation.returnSchema);
+  			if (errors.length > 0) {
+  				this.settle(invocation, /* @__PURE__ */ new Error(`Invalid return value for ${invocation.name}: ${errors.join("; ")}`));
+  				return;
+  			}
+  		}
+  		this.settle(invocation, null, value);
   	}
   };
   /** Resolves a dotted path such as `items.0.name` inside parsed JSON arguments. */
@@ -199,17 +552,24 @@
   	if (!FUNCTION_NAME_PATTERN.test(name)) throw new Error("function name must be 1-64 letters, digits, \"_\" or \"-\"");
   	const description = readLiteralInput(block, blocks, "DESCRIPTION").trim();
   	if (description.length > 1024) throw new Error(`description must be at most ${MAX_DESCRIPTION_LENGTH} characters`);
-  	const parameters = parseSchema(readLiteralInput(block, blocks, "SCHEMA"));
+  	const parameters = parseSchema(readLiteralInput(block, blocks, "SCHEMA"), "args schema", true);
+  	const returnsText = readOptionalLiteralInput(block, blocks, "RETURNS");
+  	const returns = returnsText === void 0 || returnsText.trim() === "" ? void 0 : parseSchema(returnsText, "returns schema", false);
   	const exportAs = String(block.fields?.EXPORT?.value ?? "none") === "tool" ? "tool" : "none";
   	if (exportAs === "tool" && description.length === 0) throw new Error("a function exported as a tool needs a description");
   	return {
   		name,
   		description,
   		parameters,
+  		...returns ? { returns } : {},
   		exportAs,
   		targetName,
   		blockId: block.id
   	};
+  }
+  function readOptionalLiteralInput(block, blocks, inputName) {
+  	if (!block.inputs?.[inputName]) return void 0;
+  	return readLiteralInput(block, blocks, inputName);
   }
   function readLiteralInput(block, blocks, inputName) {
   	const input = block.inputs?.[inputName];
@@ -221,78 +581,18 @@
   	if (!field) throw new Error(`${inputName} is missing`);
   	return String(field.value ?? "");
   }
-  function parseSchema(text) {
+  function parseSchema(text, label, requireObjectType) {
   	let value;
   	try {
   		value = JSON.parse(text);
   	} catch {
-  		throw new Error("args schema must be valid JSON");
+  		throw new Error(`${label} must be valid JSON`);
   	}
-  	if (typeof value !== "object" || value === null || Array.isArray(value)) throw new Error("args schema must be a JSON object");
+  	if (typeof value !== "object" || value === null || Array.isArray(value)) throw new Error(`${label} must be a JSON object`);
   	const schema = value;
-  	if (schema.type !== "object") throw new Error("args schema must have \"type\": \"object\"");
+  	if (requireObjectType && schema.type !== "object") throw new Error("args schema must have \"type\": \"object\"");
+  	validateSchemaDefinition(schema, label);
   	return schema;
-  }
-  /**
-  * A small JSON Schema validator for function arguments. It interprets the schema at run time and
-  * never generates code, so it also works where `eval` is unavailable (for example Cloudflare Workers).
-  *
-  * Supported keywords: type, properties, required, additionalProperties (boolean), items, enum,
-  * const, minimum, maximum, minLength, maxLength, minItems, maxItems. Other keywords, such as
-  * description and title, are ignored.
-  */
-  function validateAgainstSchema(value, schema, path = "$") {
-  	const rule = asRecord$2(schema);
-  	if (!rule) return [];
-  	const errors = [];
-  	if (rule.type !== void 0) {
-  		const types = Array.isArray(rule.type) ? rule.type : [rule.type];
-  		if (!types.some((type) => matchesType(value, type))) return [`${path} must be ${types.join(" or ")}`];
-  	}
-  	if (Array.isArray(rule.enum) && !rule.enum.some((candidate) => deepEqual(candidate, value))) errors.push(`${path} must be one of ${rule.enum.map((item) => JSON.stringify(item)).join(", ")}`);
-  	if ("const" in rule && !deepEqual(rule.const, value)) errors.push(`${path} must be ${JSON.stringify(rule.const)}`);
-  	if (typeof value === "number") {
-  		if (typeof rule.minimum === "number" && value < rule.minimum) errors.push(`${path} must be >= ${rule.minimum}`);
-  		if (typeof rule.maximum === "number" && value > rule.maximum) errors.push(`${path} must be <= ${rule.maximum}`);
-  	}
-  	if (typeof value === "string") {
-  		const length = [...value].length;
-  		if (typeof rule.minLength === "number" && length < rule.minLength) errors.push(`${path} must have at least ${rule.minLength} characters`);
-  		if (typeof rule.maxLength === "number" && length > rule.maxLength) errors.push(`${path} must have at most ${rule.maxLength} characters`);
-  	}
-  	if (Array.isArray(value)) {
-  		if (typeof rule.minItems === "number" && value.length < rule.minItems) errors.push(`${path} must have at least ${rule.minItems} items`);
-  		if (typeof rule.maxItems === "number" && value.length > rule.maxItems) errors.push(`${path} must have at most ${rule.maxItems} items`);
-  		if (rule.items !== void 0) value.forEach((item, index) => errors.push(...validateAgainstSchema(item, rule.items, `${path}[${index}]`)));
-  	}
-  	const object = asRecord$2(value);
-  	if (object) {
-  		const properties = asRecord$2(rule.properties) ?? {};
-  		if (Array.isArray(rule.required)) {
-  			for (const name of rule.required) if (typeof name === "string" && !(name in object)) errors.push(`${path}.${name} is required`);
-  		}
-  		for (const [name, child] of Object.entries(object)) if (name in properties) errors.push(...validateAgainstSchema(child, properties[name], `${path}.${name}`));
-  		else if (rule.additionalProperties === false) errors.push(`${path}.${name} is not allowed`);
-  	}
-  	return errors;
-  }
-  function matchesType(value, type) {
-  	switch (type) {
-  		case "object": return asRecord$2(value) !== null;
-  		case "array": return Array.isArray(value);
-  		case "string": return typeof value === "string";
-  		case "number": return typeof value === "number" && Number.isFinite(value);
-  		case "integer": return typeof value === "number" && Number.isInteger(value);
-  		case "boolean": return typeof value === "boolean";
-  		case "null": return value === null;
-  		default: return false;
-  	}
-  }
-  function deepEqual(left, right) {
-  	return JSON.stringify(left) === JSON.stringify(right);
-  }
-  function asRecord$2(value) {
-  	return typeof value === "object" && value !== null && !Array.isArray(value) ? value : null;
   }
   /**
   * Composition API: named functions without TurboWarp block definitions.
@@ -341,7 +641,7 @@
   		if (options.exportedOnly && definition.exportAs !== "tool") return Promise.reject(/* @__PURE__ */ new Error(`Function ${trimmed} is not exported as a tool.`));
   		const errors = validateAgainstSchema(args, definition.parameters);
   		if (errors.length > 0) return Promise.reject(/* @__PURE__ */ new Error(`Invalid arguments for ${trimmed}: ${errors.join("; ")}`));
-  		return this.dispatcher.invoke(trimmed, args, options.caller);
+  		return this.dispatcher.invoke(trimmed, args, options.caller, definition.returns);
   	}
   	start(name, args, options = {}) {
   		const id = `p_${this.nextPromiseId++}`;
@@ -831,7 +1131,7 @@
   	}
   };
   //#endregion
-  //#region node_modules/.pnpm/@kubohiroya+turbowarp-openai-realtime-api@0.1.0/node_modules/@kubohiroya/turbowarp-openai-realtime-api/dist/composition.js
+  //#region node_modules/.pnpm/@kubohiroya+turbowarp-openai-realtime-api@0.1.1_react@18.3.1/node_modules/@kubohiroya/turbowarp-openai-realtime-api/dist/composition.js
   /**
   * Conversation logic over a transport: sending user text, collecting assistant output, and
   * answering function calls with `function_call_output` followed by one `response.create`.
@@ -1499,7 +1799,7 @@
   	}
   };
   //#endregion
-  //#region node_modules/.pnpm/@kubohiroya+turbowarp-web-speech@0.1.0/node_modules/@kubohiroya/turbowarp-web-speech/dist/composition.js
+  //#region node_modules/.pnpm/@kubohiroya+turbowarp-web-speech@0.1.1/node_modules/@kubohiroya/turbowarp-web-speech/dist/composition.js
   /** Errors after which restarting in continuous mode would only loop. */
   var FATAL_ERRORS = /* @__PURE__ */ new Set([
   	"not-allowed",
@@ -2193,6 +2493,7 @@
   var VoiceChatExtension = class {
   	constructor(deps) {
   		this.lastErrorMessage = "";
+  		this.fixedEditorRuntime = deps.runtime;
   		this.voice = createVoiceChat({
   			...deps,
   			functionHatOpcode: DEFINE_FUNCTION_OPCODE
@@ -2208,7 +2509,7 @@
   		runtime.on("PROJECT_STOP_ALL", () => this.voice.chat.end());
   	}
   	getInfo() {
-  		return {
+  		const info = {
   			id: extensionConfig.id,
   			name: Scratch.translate(block_definitions_default.extensionName),
   			docsURI: extensionConfig.docsURI,
@@ -2219,6 +2520,8 @@
   				items: [...menu.items]
   			}]))
   		};
+  		this.fixedEditorsDispose ?? (this.fixedEditorsDispose = registerFixedInputEditors(Scratch, this.fixedEditorRuntime, info.blocks));
+  		return info;
   	}
   	configureRelay(args) {
   		this.record(() => this.voice.realtime.configureRelay(text(args.ENDPOINT)));
