@@ -2,7 +2,7 @@
 
 <img src="assets/block-icon.svg" alt="" width="48" height="48">
 
-[English](README.md) | [日本語](README.ja.md)
+[English](README.md) | 日本語
 
 AIと声で会話するためのTurboWarp機能拡張です。OpenAI Realtime API、ブラウザ自身の音声認識と音声合成、AIから呼び出せるブロックの関数、そして会話を短く保って料金を抑える「強制コーヒーブレイク」を組み合わせています。
 

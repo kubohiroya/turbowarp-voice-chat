@@ -2,7 +2,7 @@
 
 <img src="assets/block-icon.svg" alt="" width="48" height="48">
 
-[English](README.md) | [日本語](README.ja.md)
+English | [日本語](README.ja.md)
 
 A TurboWarp extension for talking with an AI by voice. It combines the OpenAI Realtime API, the browser's own speech recognition and speech synthesis, functions written in blocks that the AI can call, and a forced coffee break that keeps conversations short and costs low.
 
