@@ -51,7 +51,7 @@ AIと声で会話するためのTurboWarp機能拡張です。OpenAI Realtime AP
 npm packageとして使う場合は、検証済みのversionをexact pinします。
 
 ```bash
-pnpm add --save-exact @kubohiroya/turbowarp-voice-chat@0.2.0
+pnpm add --save-exact @kubohiroya/turbowarp-voice-chat@0.3.0
 ```
 
 ## 上流の機能拡張との関係
@@ -111,7 +111,7 @@ API manifestを明示的に有効にすると、更新時にfileを置き換え�
 ネットワークを使わずに検証します。新しいexact versionをインストールしたら、pinを更新してビルドし直します。
 
 ```bash
-pnpm add --save-exact @kubohiroya/turbowarp-voice-chat@0.2.0
+pnpm add --save-exact @kubohiroya/turbowarp-voice-chat@0.3.0
 sb3-toolchain extensions update app kubohiroyavoicechat --yes
 sb3-toolchain check app
 sb3-toolchain build app --output dist/project.sb3
