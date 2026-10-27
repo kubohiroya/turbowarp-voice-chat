@@ -1,0 +1,43 @@
+{
+  "baseURL": "https://kubohiroya.github.io/turbowarp-voice-chat/",
+  "extension": {
+    "id": "kubohiroyavoicechat",
+    "bundle": "dist/turbowarp-voice-chat.js",
+    "unsandboxed": true
+  },
+  "samples": [
+    {
+      "name": "one-turn-voice-chat",
+      "title": "Voice input, text reply",
+      "instructions": "Green flag resets. Configure your local relay, then click Start/Read. Stop clears settings. No automatic connection.",
+      "checks": [
+        {
+          "variable": "sample-state",
+          "equals": "Ready"
+        },
+        {
+          "variable": "sample-paired",
+          "equals": false
+        },
+        {
+          "variable": "sample-result",
+          "equals": ""
+        },
+        {
+          "variable": "sample-error",
+          "equals": ""
+        },
+        {
+          "variable": "sample-endpoint",
+          "equals": ""
+        },
+        {
+          "variable": "sample-connection",
+          "equals": "idle"
+        }
+      ],
+      "requirements": "localhost capability-proxy（openai provider、課金有効なOpenAI APIアカウント、許可済みモデル）、マイク、WebRTC対応ブラウザ。利用者の明示開始のみマイク取得。応答はtextを初期選択し自動読み上げなし。",
+      "unverified": "実relayペアリング、マイク取得・音声認識、実モデル応答・課金、実会話1往復は未検証。音を出す自動検証は実施しない。"
+    }
+  ]
+}

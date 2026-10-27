@@ -8,6 +8,22 @@ A TurboWarp extension for talking with an AI by voice. It combines the OpenAI Re
 
 **User guide:** [English](https://kubohiroya.github.io/turbowarp-voice-chat/)
 
+## Minimal sample
+
+[Open in TurboWarp Editor](https://turbowarp.org/editor?project_url=https%3A%2F%2Fkubohiroya.github.io%2Fturbowarp-voice-chat%2Fsamples%2Fone-turn-voice-chat.sb3) · [Download SB3](https://kubohiroya.github.io/turbowarp-voice-chat/samples/one-turn-voice-chat.sb3)
+
+1. Open the sample, enable **Run without sandbox**, and allow the bundled extension. Green flag only resets local state.
+2. Run your localhost relay, configure the provider there, then click **Configure**. Enter its loopback origin, then the eight-digit one-time pairing code. Never enter an API key. At the final prompt, press Enter with an empty answer to clear the entered code.
+3. Confirm **Relay paired = true**, then click **Start**. This explicitly requests microphone access and sends your voice to the AI. The reply is text only; after one reply the session ends, or after 30 seconds. No speech playback is enabled.
+4. Click **Stop / Clear** to end the session and clear settings/results. Before saving or sharing, complete the empty-answer prompt and clear; reopening the original sample also restores blank input values.
+
+**Requirements:** A localhost @kubohiroya/capability-proxy with the openai provider, a billable OpenAI API account and an allowed model, plus a WebRTC browser and a microphone.
+
+**Verification boundary:** Real relay pairing, microphone capture, recognition, model responses and billed one-turn conversation have not been verified. Automated checks cover blank/unpaired state and cancellation only, with browser audio muted. No real relay, API, microphone, or device success is claimed.
+
+Editable sources and maintenance: [samples/README.md](samples/README.md).
+
+
 ## What it does
 
 - Talks with an AI through [`@kubohiroya/capability-proxy`](https://github.com/kubohiroya/capability-proxy), which keeps the OpenAI API key on localhost.

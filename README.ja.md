@@ -8,6 +8,22 @@ AIと声で会話するためのTurboWarp機能拡張です。OpenAI Realtime AP
 
 **利用ガイド:** [English](https://kubohiroya.github.io/turbowarp-voice-chat/)
 
+## 最小サンプル
+
+[TurboWarp Editorで開く](https://turbowarp.org/editor?project_url=https%3A%2F%2Fkubohiroya.github.io%2Fturbowarp-voice-chat%2Fsamples%2Fone-turn-voice-chat.sb3) · [SB3をダウンロード](https://kubohiroya.github.io/turbowarp-voice-chat/samples/one-turn-voice-chat.sb3)
+
+1. Editorで開き、**Run without sandbox**を選択して拡張を許可します。緑旗はローカル状態の初期化だけです。
+2. localhost relayでproviderを設定して起動し、**Configure**をクリック。ループバックorigin、8桁の一回限りのコードを入力します。API keyは入力しません。最後の確認では空欄のままEnterを押し、入力したコードを消します。
+3. **Relay paired = true**を確認して**Start**をクリック。ここで初めてマイク使用を要求し、音声をAIへ送ります。応答はテキストのみで読み上げません。1応答または30秒で終了します。
+4. **Stop / Clear**で終了し設定・結果を消去。保存・共有前に空欄回答とClearを実行してください。元のサンプルを開き直すと入力は空に戻ります。
+
+**要件:** localhost capability-proxy（openai provider、課金有効なOpenAI APIアカウント、許可済みモデル）、マイク、WebRTC対応ブラウザ。利用者の明示開始のみマイク取得。応答はtextを初期選択し自動読み上げなし。
+
+**未検証範囲:** 実relayペアリング、マイク取得・音声認識、実モデル応答・課金、実会話1往復は未検証。音を出す自動検証は実施しない。 自動検証は無音ブラウザで空設定・未ペアリング・キャンセル分岐だけを確認します。
+
+編集元と保守方法: [samples/README.md](samples/README.md)。
+
+
 ## できること
 
 - OpenAIのAPIキーをlocalhostに置いたままにする[`@kubohiroya/capability-proxy`](https://github.com/kubohiroya/capability-proxy)を通じて、AIと会話する
