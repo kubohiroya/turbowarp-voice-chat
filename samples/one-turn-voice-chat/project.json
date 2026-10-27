@@ -1,0 +1,1787 @@
+{
+  "targets": [
+    {
+      "isStage": true,
+      "name": "Stage",
+      "variables": {
+        "sample-state": [
+          "Sample state",
+          ""
+        ],
+        "sample-endpoint": [
+          "Relay endpoint",
+          ""
+        ],
+        "sample-alias": [
+          "Device alias",
+          ""
+        ],
+        "sample-paired": [
+          "Relay paired",
+          ""
+        ],
+        "sample-result": [
+          "Result",
+          ""
+        ],
+        "sample-error": [
+          "Last error",
+          ""
+        ],
+        "sample-connection": [
+          "Connection",
+          ""
+        ]
+      },
+      "lists": {},
+      "broadcasts": {
+        "configure": "Configure",
+        "start": "Start",
+        "stop": "Stop"
+      },
+      "blocks": {
+        "b1": {
+          "opcode": "kubohiroyavoicechat_endConversation",
+          "next": "b12",
+          "parent": "b16",
+          "inputs": {},
+          "fields": {},
+          "shadow": false,
+          "topLevel": false
+        },
+        "b2": {
+          "opcode": "kubohiroyavoicechat_configureRelay",
+          "next": "b3",
+          "parent": "b15",
+          "inputs": {
+            "ENDPOINT": [
+              1,
+              [
+                10,
+                "http://127.0.0.1:8787"
+              ]
+            ]
+          },
+          "fields": {},
+          "shadow": false,
+          "topLevel": false
+        },
+        "b3": {
+          "opcode": "data_setvariableto",
+          "next": "b4",
+          "parent": "b2",
+          "inputs": {
+            "VALUE": [
+              1,
+              [
+                10,
+                ""
+              ]
+            ]
+          },
+          "fields": {
+            "VARIABLE": [
+              "Relay endpoint",
+              "sample-endpoint"
+            ]
+          },
+          "shadow": false,
+          "topLevel": false
+        },
+        "b4": {
+          "opcode": "data_setvariableto",
+          "next": "b5",
+          "parent": "b3",
+          "inputs": {
+            "VALUE": [
+              1,
+              [
+                10,
+                ""
+              ]
+            ]
+          },
+          "fields": {
+            "VARIABLE": [
+              "Device alias",
+              "sample-alias"
+            ]
+          },
+          "shadow": false,
+          "topLevel": false
+        },
+        "b5": {
+          "opcode": "data_setvariableto",
+          "next": "b6",
+          "parent": "b4",
+          "inputs": {
+            "VALUE": [
+              1,
+              [
+                10,
+                ""
+              ]
+            ]
+          },
+          "fields": {
+            "VARIABLE": [
+              "Result",
+              "sample-result"
+            ]
+          },
+          "shadow": false,
+          "topLevel": false
+        },
+        "b6": {
+          "opcode": "data_setvariableto",
+          "next": "b8",
+          "parent": "b5",
+          "inputs": {
+            "VALUE": [
+              1,
+              [
+                10,
+                ""
+              ]
+            ]
+          },
+          "fields": {
+            "VARIABLE": [
+              "Last error",
+              "sample-error"
+            ]
+          },
+          "shadow": false,
+          "topLevel": false
+        },
+        "b7": {
+          "opcode": "kubohiroyavoicechat_isRelayPaired",
+          "next": null,
+          "parent": "b8",
+          "inputs": {},
+          "fields": {},
+          "shadow": false,
+          "topLevel": false
+        },
+        "b8": {
+          "opcode": "data_setvariableto",
+          "next": "b10",
+          "parent": "b6",
+          "inputs": {
+            "VALUE": [
+              2,
+              "b7"
+            ]
+          },
+          "fields": {
+            "VARIABLE": [
+              "Relay paired",
+              "sample-paired"
+            ]
+          },
+          "shadow": false,
+          "topLevel": false
+        },
+        "b9": {
+          "opcode": "kubohiroyavoicechat_conversationStatus",
+          "next": null,
+          "parent": "b10",
+          "inputs": {},
+          "fields": {},
+          "shadow": false,
+          "topLevel": false
+        },
+        "b10": {
+          "opcode": "data_setvariableto",
+          "next": "b11",
+          "parent": "b8",
+          "inputs": {
+            "VALUE": [
+              2,
+              "b9"
+            ]
+          },
+          "fields": {
+            "VARIABLE": [
+              "Connection",
+              "sample-connection"
+            ]
+          },
+          "shadow": false,
+          "topLevel": false
+        },
+        "b11": {
+          "opcode": "data_setvariableto",
+          "next": null,
+          "parent": "b10",
+          "inputs": {
+            "VALUE": [
+              1,
+              [
+                10,
+                "Ready"
+              ]
+            ]
+          },
+          "fields": {
+            "VARIABLE": [
+              "Sample state",
+              "sample-state"
+            ]
+          },
+          "shadow": false,
+          "topLevel": false
+        },
+        "b12": {
+          "opcode": "kubohiroyavoicechat_setSpeechInput",
+          "next": "b13",
+          "parent": "b1",
+          "inputs": {},
+          "fields": {
+            "INPUT": [
+              "realtime",
+              null
+            ]
+          },
+          "shadow": false,
+          "topLevel": false
+        },
+        "b13": {
+          "opcode": "kubohiroyavoicechat_setSpeechOutput",
+          "next": "b14",
+          "parent": "b12",
+          "inputs": {},
+          "fields": {
+            "OUTPUT": [
+              "text",
+              null
+            ]
+          },
+          "shadow": false,
+          "topLevel": false
+        },
+        "b14": {
+          "opcode": "kubohiroyavoicechat_setInstructions",
+          "next": "b15",
+          "parent": "b13",
+          "inputs": {
+            "TEXT": [
+              1,
+              [
+                10,
+                "日本語で一文だけ返してください。"
+              ]
+            ]
+          },
+          "fields": {},
+          "shadow": false,
+          "topLevel": false
+        },
+        "b15": {
+          "opcode": "kubohiroyavoicechat_setCoffeeBreak",
+          "next": "b2",
+          "parent": "b14",
+          "inputs": {
+            "TALK": [
+              1,
+              [
+                10,
+                "0.5"
+              ]
+            ],
+            "BREAK": [
+              1,
+              [
+                10,
+                "0"
+              ]
+            ]
+          },
+          "fields": {
+            "AFTER": [
+              "stop",
+              null
+            ]
+          },
+          "shadow": false,
+          "topLevel": false
+        },
+        "b16": {
+          "opcode": "event_whenflagclicked",
+          "next": "b1",
+          "parent": null,
+          "inputs": {},
+          "fields": {},
+          "shadow": false,
+          "topLevel": true,
+          "x": 30,
+          "y": 158
+        },
+        "b17": {
+          "opcode": "kubohiroyavoicechat_endConversation",
+          "next": "sample-reset-relay-token",
+          "parent": "b48",
+          "inputs": {},
+          "fields": {},
+          "shadow": false,
+          "topLevel": false
+        },
+        "b18": {
+          "opcode": "data_setvariableto",
+          "next": "b19",
+          "parent": "sample-reset-relay-token",
+          "inputs": {
+            "VALUE": [
+              1,
+              [
+                10,
+                "Configure"
+              ]
+            ]
+          },
+          "fields": {
+            "VARIABLE": [
+              "Sample state",
+              "sample-state"
+            ]
+          },
+          "shadow": false,
+          "topLevel": false
+        },
+        "b19": {
+          "opcode": "sensing_askandwait",
+          "next": "b21",
+          "parent": "b18",
+          "inputs": {
+            "QUESTION": [
+              1,
+              [
+                10,
+                "Local relay origin (blank cancels):"
+              ]
+            ]
+          },
+          "fields": {},
+          "shadow": false,
+          "topLevel": false
+        },
+        "b20": {
+          "opcode": "sensing_answer",
+          "next": null,
+          "parent": "b21",
+          "inputs": {},
+          "fields": {},
+          "shadow": false,
+          "topLevel": false
+        },
+        "b21": {
+          "opcode": "data_setvariableto",
+          "next": "b26",
+          "parent": "b19",
+          "inputs": {
+            "VALUE": [
+              2,
+              "b20"
+            ]
+          },
+          "fields": {
+            "VARIABLE": [
+              "Relay endpoint",
+              "sample-endpoint"
+            ]
+          },
+          "shadow": false,
+          "topLevel": false
+        },
+        "b22": {
+          "opcode": "data_variable",
+          "next": null,
+          "parent": "b23",
+          "inputs": {},
+          "fields": {
+            "VARIABLE": [
+              "Relay endpoint",
+              "sample-endpoint"
+            ]
+          },
+          "shadow": false,
+          "topLevel": false
+        },
+        "b23": {
+          "opcode": "operator_equals",
+          "next": null,
+          "parent": "b26",
+          "inputs": {
+            "OPERAND1": [
+              2,
+              "b22"
+            ],
+            "OPERAND2": [
+              1,
+              [
+                10,
+                ""
+              ]
+            ]
+          },
+          "fields": {},
+          "shadow": false,
+          "topLevel": false
+        },
+        "b24": {
+          "opcode": "data_setvariableto",
+          "next": "b25",
+          "parent": "b26",
+          "inputs": {
+            "VALUE": [
+              1,
+              [
+                10,
+                "Relay endpoint required"
+              ]
+            ]
+          },
+          "fields": {
+            "VARIABLE": [
+              "Sample state",
+              "sample-state"
+            ]
+          },
+          "shadow": false,
+          "topLevel": false
+        },
+        "b25": {
+          "opcode": "control_stop",
+          "next": null,
+          "parent": "b24",
+          "inputs": {},
+          "fields": {
+            "STOP_OPTION": [
+              "this script",
+              null
+            ]
+          },
+          "shadow": false,
+          "topLevel": false
+        },
+        "b26": {
+          "opcode": "control_if",
+          "next": "b28",
+          "parent": "b21",
+          "inputs": {
+            "CONDITION": [
+              2,
+              "b23"
+            ],
+            "SUBSTACK": [
+              2,
+              "b24"
+            ]
+          },
+          "fields": {},
+          "shadow": false,
+          "topLevel": false
+        },
+        "b27": {
+          "opcode": "data_variable",
+          "next": null,
+          "parent": "b28",
+          "inputs": {},
+          "fields": {
+            "VARIABLE": [
+              "Relay endpoint",
+              "sample-endpoint"
+            ]
+          },
+          "shadow": false,
+          "topLevel": false
+        },
+        "b28": {
+          "opcode": "kubohiroyavoicechat_configureRelay",
+          "next": "b30",
+          "parent": "b26",
+          "inputs": {
+            "ENDPOINT": [
+              2,
+              "b27"
+            ]
+          },
+          "fields": {},
+          "shadow": false,
+          "topLevel": false
+        },
+        "b29": {
+          "opcode": "kubohiroyavoicechat_lastError",
+          "next": null,
+          "parent": "b30",
+          "inputs": {},
+          "fields": {},
+          "shadow": false,
+          "topLevel": false
+        },
+        "b30": {
+          "opcode": "data_setvariableto",
+          "next": "b36",
+          "parent": "b28",
+          "inputs": {
+            "VALUE": [
+              2,
+              "b29"
+            ]
+          },
+          "fields": {
+            "VARIABLE": [
+              "Last error",
+              "sample-error"
+            ]
+          },
+          "shadow": false,
+          "topLevel": false
+        },
+        "b31": {
+          "opcode": "data_variable",
+          "next": null,
+          "parent": "b32",
+          "inputs": {},
+          "fields": {
+            "VARIABLE": [
+              "Last error",
+              "sample-error"
+            ]
+          },
+          "shadow": false,
+          "topLevel": false
+        },
+        "b32": {
+          "opcode": "operator_equals",
+          "next": null,
+          "parent": "b33",
+          "inputs": {
+            "OPERAND1": [
+              2,
+              "b31"
+            ],
+            "OPERAND2": [
+              1,
+              [
+                10,
+                ""
+              ]
+            ]
+          },
+          "fields": {},
+          "shadow": false,
+          "topLevel": false
+        },
+        "b33": {
+          "opcode": "operator_not",
+          "next": null,
+          "parent": "b36",
+          "inputs": {
+            "OPERAND": [
+              2,
+              "b32"
+            ]
+          },
+          "fields": {},
+          "shadow": false,
+          "topLevel": false
+        },
+        "b34": {
+          "opcode": "data_setvariableto",
+          "next": "b35",
+          "parent": "b36",
+          "inputs": {
+            "VALUE": [
+              1,
+              [
+                10,
+                "Invalid relay settings"
+              ]
+            ]
+          },
+          "fields": {
+            "VARIABLE": [
+              "Sample state",
+              "sample-state"
+            ]
+          },
+          "shadow": false,
+          "topLevel": false
+        },
+        "b35": {
+          "opcode": "control_stop",
+          "next": null,
+          "parent": "b34",
+          "inputs": {},
+          "fields": {
+            "STOP_OPTION": [
+              "this script",
+              null
+            ]
+          },
+          "shadow": false,
+          "topLevel": false
+        },
+        "b36": {
+          "opcode": "control_if",
+          "next": "b37",
+          "parent": "b30",
+          "inputs": {
+            "CONDITION": [
+              2,
+              "b33"
+            ],
+            "SUBSTACK": [
+              2,
+              "b34"
+            ]
+          },
+          "fields": {},
+          "shadow": false,
+          "topLevel": false
+        },
+        "b37": {
+          "opcode": "sensing_askandwait",
+          "next": "b39",
+          "parent": "b36",
+          "inputs": {
+            "QUESTION": [
+              1,
+              [
+                10,
+                "One-time 8-digit pairing code (never an API key):"
+              ]
+            ]
+          },
+          "fields": {},
+          "shadow": false,
+          "topLevel": false
+        },
+        "b38": {
+          "opcode": "sensing_answer",
+          "next": null,
+          "parent": "b39",
+          "inputs": {},
+          "fields": {},
+          "shadow": false,
+          "topLevel": false
+        },
+        "b39": {
+          "opcode": "kubohiroyavoicechat_pairRelay",
+          "next": "b41",
+          "parent": "b37",
+          "inputs": {
+            "CODE": [
+              2,
+              "b38"
+            ]
+          },
+          "fields": {},
+          "shadow": false,
+          "topLevel": false
+        },
+        "b40": {
+          "opcode": "kubohiroyavoicechat_lastError",
+          "next": null,
+          "parent": "b41",
+          "inputs": {},
+          "fields": {},
+          "shadow": false,
+          "topLevel": false
+        },
+        "b41": {
+          "opcode": "data_setvariableto",
+          "next": "b43",
+          "parent": "b39",
+          "inputs": {
+            "VALUE": [
+              2,
+              "b40"
+            ]
+          },
+          "fields": {
+            "VARIABLE": [
+              "Last error",
+              "sample-error"
+            ]
+          },
+          "shadow": false,
+          "topLevel": false
+        },
+        "b42": {
+          "opcode": "kubohiroyavoicechat_isRelayPaired",
+          "next": null,
+          "parent": "b43",
+          "inputs": {},
+          "fields": {},
+          "shadow": false,
+          "topLevel": false
+        },
+        "b43": {
+          "opcode": "data_setvariableto",
+          "next": "b44",
+          "parent": "b41",
+          "inputs": {
+            "VALUE": [
+              2,
+              "b42"
+            ]
+          },
+          "fields": {
+            "VARIABLE": [
+              "Relay paired",
+              "sample-paired"
+            ]
+          },
+          "shadow": false,
+          "topLevel": false
+        },
+        "b44": {
+          "opcode": "sensing_askandwait",
+          "next": "b46",
+          "parent": "b43",
+          "inputs": {
+            "QUESTION": [
+              1,
+              [
+                10,
+                "Press Enter with an empty answer to clear the entered code."
+              ]
+            ]
+          },
+          "fields": {},
+          "shadow": false,
+          "topLevel": false
+        },
+        "b45": {
+          "opcode": "kubohiroyavoicechat_conversationStatus",
+          "next": null,
+          "parent": "b46",
+          "inputs": {},
+          "fields": {},
+          "shadow": false,
+          "topLevel": false
+        },
+        "b46": {
+          "opcode": "data_setvariableto",
+          "next": "b47",
+          "parent": "b44",
+          "inputs": {
+            "VALUE": [
+              2,
+              "b45"
+            ]
+          },
+          "fields": {
+            "VARIABLE": [
+              "Connection",
+              "sample-connection"
+            ]
+          },
+          "shadow": false,
+          "topLevel": false
+        },
+        "b47": {
+          "opcode": "data_setvariableto",
+          "next": null,
+          "parent": "b46",
+          "inputs": {
+            "VALUE": [
+              1,
+              [
+                10,
+                "Configured; check Relay paired"
+              ]
+            ]
+          },
+          "fields": {
+            "VARIABLE": [
+              "Sample state",
+              "sample-state"
+            ]
+          },
+          "shadow": false,
+          "topLevel": false
+        },
+        "b48": {
+          "opcode": "event_whenbroadcastreceived",
+          "next": "b17",
+          "parent": null,
+          "inputs": {},
+          "fields": {
+            "BROADCAST_OPTION": [
+              "Configure",
+              "configure"
+            ]
+          },
+          "shadow": false,
+          "topLevel": true,
+          "x": 30,
+          "y": 414
+        },
+        "b49": {
+          "opcode": "kubohiroyavoicechat_isRelayPaired",
+          "next": null,
+          "parent": "b50",
+          "inputs": {},
+          "fields": {},
+          "shadow": false,
+          "topLevel": false
+        },
+        "b50": {
+          "opcode": "data_setvariableto",
+          "next": "b55",
+          "parent": "sample-empty-endpoint",
+          "inputs": {
+            "VALUE": [
+              2,
+              "b49"
+            ]
+          },
+          "fields": {
+            "VARIABLE": [
+              "Relay paired",
+              "sample-paired"
+            ]
+          },
+          "shadow": false,
+          "topLevel": false
+        },
+        "b51": {
+          "opcode": "kubohiroyavoicechat_isRelayPaired",
+          "next": null,
+          "parent": "b52",
+          "inputs": {},
+          "fields": {},
+          "shadow": false,
+          "topLevel": false
+        },
+        "b52": {
+          "opcode": "operator_not",
+          "next": null,
+          "parent": "b55",
+          "inputs": {
+            "OPERAND": [
+              2,
+              "b51"
+            ]
+          },
+          "fields": {},
+          "shadow": false,
+          "topLevel": false
+        },
+        "b53": {
+          "opcode": "data_setvariableto",
+          "next": "b54",
+          "parent": "b55",
+          "inputs": {
+            "VALUE": [
+              1,
+              [
+                10,
+                "Pair first"
+              ]
+            ]
+          },
+          "fields": {
+            "VARIABLE": [
+              "Sample state",
+              "sample-state"
+            ]
+          },
+          "shadow": false,
+          "topLevel": false
+        },
+        "b54": {
+          "opcode": "control_stop",
+          "next": null,
+          "parent": "b53",
+          "inputs": {},
+          "fields": {
+            "STOP_OPTION": [
+              "this script",
+              null
+            ]
+          },
+          "shadow": false,
+          "topLevel": false
+        },
+        "b55": {
+          "opcode": "control_if",
+          "next": "b56",
+          "parent": "b50",
+          "inputs": {
+            "CONDITION": [
+              2,
+              "b52"
+            ],
+            "SUBSTACK": [
+              2,
+              "b53"
+            ]
+          },
+          "fields": {},
+          "shadow": false,
+          "topLevel": false
+        },
+        "b56": {
+          "opcode": "data_setvariableto",
+          "next": "b57",
+          "parent": "b55",
+          "inputs": {
+            "VALUE": [
+              1,
+              [
+                10,
+                "Listening: speak once"
+              ]
+            ]
+          },
+          "fields": {
+            "VARIABLE": [
+              "Sample state",
+              "sample-state"
+            ]
+          },
+          "shadow": false,
+          "topLevel": false
+        },
+        "b57": {
+          "opcode": "kubohiroyavoicechat_setSpeechOutput",
+          "next": "b58",
+          "parent": "b56",
+          "inputs": {},
+          "fields": {
+            "OUTPUT": [
+              "text",
+              null
+            ]
+          },
+          "shadow": false,
+          "topLevel": false
+        },
+        "b58": {
+          "opcode": "kubohiroyavoicechat_startConversation",
+          "next": "b60",
+          "parent": "b57",
+          "inputs": {},
+          "fields": {},
+          "shadow": false,
+          "topLevel": false
+        },
+        "b59": {
+          "opcode": "kubohiroyavoicechat_lastError",
+          "next": null,
+          "parent": "b60",
+          "inputs": {},
+          "fields": {},
+          "shadow": false,
+          "topLevel": false
+        },
+        "b60": {
+          "opcode": "data_setvariableto",
+          "next": "b62",
+          "parent": "b58",
+          "inputs": {
+            "VALUE": [
+              2,
+              "b59"
+            ]
+          },
+          "fields": {
+            "VARIABLE": [
+              "Last error",
+              "sample-error"
+            ]
+          },
+          "shadow": false,
+          "topLevel": false
+        },
+        "b61": {
+          "opcode": "kubohiroyavoicechat_conversationStatus",
+          "next": null,
+          "parent": "b62",
+          "inputs": {},
+          "fields": {},
+          "shadow": false,
+          "topLevel": false
+        },
+        "b62": {
+          "opcode": "data_setvariableto",
+          "next": null,
+          "parent": "b60",
+          "inputs": {
+            "VALUE": [
+              2,
+              "b61"
+            ]
+          },
+          "fields": {
+            "VARIABLE": [
+              "Connection",
+              "sample-connection"
+            ]
+          },
+          "shadow": false,
+          "topLevel": false
+        },
+        "b63": {
+          "opcode": "event_whenbroadcastreceived",
+          "next": "sample-empty-endpoint",
+          "parent": null,
+          "inputs": {},
+          "fields": {
+            "BROADCAST_OPTION": [
+              "Start",
+              "start"
+            ]
+          },
+          "shadow": false,
+          "topLevel": true,
+          "x": 30,
+          "y": 534
+        },
+        "b64": {
+          "opcode": "kubohiroyavoicechat_aiReply",
+          "next": null,
+          "parent": "b65",
+          "inputs": {},
+          "fields": {},
+          "shadow": false,
+          "topLevel": false
+        },
+        "b65": {
+          "opcode": "data_setvariableto",
+          "next": "b66",
+          "parent": "b70",
+          "inputs": {
+            "VALUE": [
+              2,
+              "b64"
+            ]
+          },
+          "fields": {
+            "VARIABLE": [
+              "Result",
+              "sample-result"
+            ]
+          },
+          "shadow": false,
+          "topLevel": false
+        },
+        "b66": {
+          "opcode": "kubohiroyavoicechat_endConversation",
+          "next": "b68",
+          "parent": "b65",
+          "inputs": {},
+          "fields": {},
+          "shadow": false,
+          "topLevel": false
+        },
+        "b67": {
+          "opcode": "kubohiroyavoicechat_conversationStatus",
+          "next": null,
+          "parent": "b68",
+          "inputs": {},
+          "fields": {},
+          "shadow": false,
+          "topLevel": false
+        },
+        "b68": {
+          "opcode": "data_setvariableto",
+          "next": "b69",
+          "parent": "b66",
+          "inputs": {
+            "VALUE": [
+              2,
+              "b67"
+            ]
+          },
+          "fields": {
+            "VARIABLE": [
+              "Connection",
+              "sample-connection"
+            ]
+          },
+          "shadow": false,
+          "topLevel": false
+        },
+        "b69": {
+          "opcode": "data_setvariableto",
+          "next": null,
+          "parent": "b68",
+          "inputs": {
+            "VALUE": [
+              1,
+              [
+                10,
+                "One reply complete"
+              ]
+            ]
+          },
+          "fields": {
+            "VARIABLE": [
+              "Sample state",
+              "sample-state"
+            ]
+          },
+          "shadow": false,
+          "topLevel": false
+        },
+        "b70": {
+          "opcode": "kubohiroyavoicechat_whenAiReplies",
+          "next": "b65",
+          "parent": null,
+          "inputs": {},
+          "fields": {},
+          "shadow": false,
+          "topLevel": true,
+          "x": 30,
+          "y": 590
+        },
+        "b71": {
+          "opcode": "kubohiroyavoicechat_endConversation",
+          "next": "b72",
+          "parent": "b82",
+          "inputs": {},
+          "fields": {},
+          "shadow": false,
+          "topLevel": false
+        },
+        "b72": {
+          "opcode": "kubohiroyavoicechat_configureRelay",
+          "next": "b73",
+          "parent": "b71",
+          "inputs": {
+            "ENDPOINT": [
+              1,
+              [
+                10,
+                "http://127.0.0.1:8787"
+              ]
+            ]
+          },
+          "fields": {},
+          "shadow": false,
+          "topLevel": false
+        },
+        "b73": {
+          "opcode": "data_setvariableto",
+          "next": "b74",
+          "parent": "b72",
+          "inputs": {
+            "VALUE": [
+              1,
+              [
+                10,
+                ""
+              ]
+            ]
+          },
+          "fields": {
+            "VARIABLE": [
+              "Relay endpoint",
+              "sample-endpoint"
+            ]
+          },
+          "shadow": false,
+          "topLevel": false
+        },
+        "b74": {
+          "opcode": "data_setvariableto",
+          "next": "b75",
+          "parent": "b73",
+          "inputs": {
+            "VALUE": [
+              1,
+              [
+                10,
+                ""
+              ]
+            ]
+          },
+          "fields": {
+            "VARIABLE": [
+              "Device alias",
+              "sample-alias"
+            ]
+          },
+          "shadow": false,
+          "topLevel": false
+        },
+        "b75": {
+          "opcode": "data_setvariableto",
+          "next": "b76",
+          "parent": "b74",
+          "inputs": {
+            "VALUE": [
+              1,
+              [
+                10,
+                ""
+              ]
+            ]
+          },
+          "fields": {
+            "VARIABLE": [
+              "Result",
+              "sample-result"
+            ]
+          },
+          "shadow": false,
+          "topLevel": false
+        },
+        "b76": {
+          "opcode": "data_setvariableto",
+          "next": "b78",
+          "parent": "b75",
+          "inputs": {
+            "VALUE": [
+              1,
+              [
+                10,
+                ""
+              ]
+            ]
+          },
+          "fields": {
+            "VARIABLE": [
+              "Last error",
+              "sample-error"
+            ]
+          },
+          "shadow": false,
+          "topLevel": false
+        },
+        "b77": {
+          "opcode": "kubohiroyavoicechat_isRelayPaired",
+          "next": null,
+          "parent": "b78",
+          "inputs": {},
+          "fields": {},
+          "shadow": false,
+          "topLevel": false
+        },
+        "b78": {
+          "opcode": "data_setvariableto",
+          "next": "b80",
+          "parent": "b76",
+          "inputs": {
+            "VALUE": [
+              2,
+              "b77"
+            ]
+          },
+          "fields": {
+            "VARIABLE": [
+              "Relay paired",
+              "sample-paired"
+            ]
+          },
+          "shadow": false,
+          "topLevel": false
+        },
+        "b79": {
+          "opcode": "kubohiroyavoicechat_conversationStatus",
+          "next": null,
+          "parent": "b80",
+          "inputs": {},
+          "fields": {},
+          "shadow": false,
+          "topLevel": false
+        },
+        "b80": {
+          "opcode": "data_setvariableto",
+          "next": "b81",
+          "parent": "b78",
+          "inputs": {
+            "VALUE": [
+              2,
+              "b79"
+            ]
+          },
+          "fields": {
+            "VARIABLE": [
+              "Connection",
+              "sample-connection"
+            ]
+          },
+          "shadow": false,
+          "topLevel": false
+        },
+        "b81": {
+          "opcode": "data_setvariableto",
+          "next": null,
+          "parent": "b80",
+          "inputs": {
+            "VALUE": [
+              1,
+              [
+                10,
+                "Stopped; settings cleared"
+              ]
+            ]
+          },
+          "fields": {
+            "VARIABLE": [
+              "Sample state",
+              "sample-state"
+            ]
+          },
+          "shadow": false,
+          "topLevel": false
+        },
+        "b82": {
+          "opcode": "event_whenbroadcastreceived",
+          "next": "b71",
+          "parent": null,
+          "inputs": {},
+          "fields": {
+            "BROADCAST_OPTION": [
+              "Stop",
+              "stop"
+            ]
+          },
+          "shadow": false,
+          "topLevel": true,
+          "x": 30,
+          "y": 686
+        },
+        "sample-reset-relay-token": {
+          "opcode": "kubohiroyavoicechat_configureRelay",
+          "next": "b18",
+          "parent": "b17",
+          "inputs": {
+            "ENDPOINT": [
+              1,
+              [
+                10,
+                "http://127.0.0.1:8787"
+              ]
+            ]
+          },
+          "fields": {},
+          "shadow": false,
+          "topLevel": false
+        },
+        "sample-empty-endpoint": {
+          "opcode": "control_if",
+          "next": "b50",
+          "parent": "b63",
+          "inputs": {
+            "CONDITION": [
+              2,
+              "sample-empty-endpoint-equals"
+            ],
+            "SUBSTACK": [
+              2,
+              "sample-empty-endpoint-message"
+            ]
+          },
+          "fields": {},
+          "shadow": false,
+          "topLevel": false
+        },
+        "sample-empty-endpoint-equals": {
+          "opcode": "operator_equals",
+          "next": null,
+          "parent": "sample-empty-endpoint",
+          "inputs": {
+            "OPERAND1": [
+              2,
+              "sample-empty-endpoint-variable"
+            ],
+            "OPERAND2": [
+              1,
+              [
+                10,
+                ""
+              ]
+            ]
+          },
+          "fields": {},
+          "shadow": false,
+          "topLevel": false
+        },
+        "sample-empty-endpoint-variable": {
+          "opcode": "data_variable",
+          "next": null,
+          "parent": "sample-empty-endpoint-equals",
+          "inputs": {},
+          "fields": {
+            "VARIABLE": [
+              "Relay endpoint",
+              "sample-endpoint"
+            ]
+          },
+          "shadow": false,
+          "topLevel": false
+        },
+        "sample-empty-endpoint-message": {
+          "opcode": "data_setvariableto",
+          "next": "sample-empty-endpoint-stop",
+          "parent": "sample-empty-endpoint",
+          "inputs": {
+            "VALUE": [
+              1,
+              [
+                10,
+                "Pair first"
+              ]
+            ]
+          },
+          "fields": {
+            "VARIABLE": [
+              "Sample state",
+              "sample-state"
+            ]
+          },
+          "shadow": false,
+          "topLevel": false
+        },
+        "sample-empty-endpoint-stop": {
+          "opcode": "control_stop",
+          "next": null,
+          "parent": "sample-empty-endpoint-message",
+          "inputs": {},
+          "fields": {
+            "STOP_OPTION": [
+              "this script",
+              null
+            ]
+          },
+          "shadow": false,
+          "topLevel": false
+        }
+      },
+      "comments": {},
+      "currentCostume": 0,
+      "costumes": [
+        {
+          "assetId": "backdrop",
+          "name": "instructions",
+          "md5ext": "backdrop.svg",
+          "dataFormat": "svg",
+          "rotationCenterX": 240,
+          "rotationCenterY": 180
+        }
+      ],
+      "sounds": [],
+      "volume": 100,
+      "layerOrder": 0,
+      "tempo": 60,
+      "videoTransparency": 50,
+      "videoState": "off",
+      "textToSpeechLanguage": null
+    },
+    {
+      "isStage": false,
+      "name": "Configure",
+      "variables": {},
+      "lists": {},
+      "broadcasts": {},
+      "blocks": {
+        "click": {
+          "opcode": "event_whenthisspriteclicked",
+          "next": "send",
+          "parent": null,
+          "inputs": {},
+          "fields": {},
+          "shadow": false,
+          "topLevel": true,
+          "x": 30,
+          "y": 30
+        },
+        "send": {
+          "opcode": "event_broadcast",
+          "next": null,
+          "parent": "click",
+          "inputs": {
+            "BROADCAST_INPUT": [
+              1,
+              "message"
+            ]
+          },
+          "fields": {},
+          "shadow": false,
+          "topLevel": false
+        },
+        "message": {
+          "opcode": "event_broadcast_menu",
+          "next": null,
+          "parent": "send",
+          "inputs": {},
+          "fields": {
+            "BROADCAST_OPTION": [
+              "Configure",
+              "configure"
+            ]
+          },
+          "shadow": true,
+          "topLevel": false
+        }
+      },
+      "comments": {},
+      "currentCostume": 0,
+      "costumes": [
+        {
+          "assetId": "configure",
+          "name": "Configure",
+          "md5ext": "configure.svg",
+          "dataFormat": "svg",
+          "rotationCenterX": 62,
+          "rotationCenterY": 22
+        }
+      ],
+      "sounds": [],
+      "volume": 100,
+      "layerOrder": 1,
+      "visible": true,
+      "x": -150,
+      "y": -136,
+      "size": 100,
+      "direction": 90,
+      "draggable": false,
+      "rotationStyle": "all around"
+    },
+    {
+      "isStage": false,
+      "name": "Start",
+      "variables": {},
+      "lists": {},
+      "broadcasts": {},
+      "blocks": {
+        "click": {
+          "opcode": "event_whenthisspriteclicked",
+          "next": "send",
+          "parent": null,
+          "inputs": {},
+          "fields": {},
+          "shadow": false,
+          "topLevel": true,
+          "x": 30,
+          "y": 30
+        },
+        "send": {
+          "opcode": "event_broadcast",
+          "next": null,
+          "parent": "click",
+          "inputs": {
+            "BROADCAST_INPUT": [
+              1,
+              "message"
+            ]
+          },
+          "fields": {},
+          "shadow": false,
+          "topLevel": false
+        },
+        "message": {
+          "opcode": "event_broadcast_menu",
+          "next": null,
+          "parent": "send",
+          "inputs": {},
+          "fields": {
+            "BROADCAST_OPTION": [
+              "Start",
+              "start"
+            ]
+          },
+          "shadow": true,
+          "topLevel": false
+        }
+      },
+      "comments": {},
+      "currentCostume": 0,
+      "costumes": [
+        {
+          "assetId": "start",
+          "name": "Start",
+          "md5ext": "start.svg",
+          "dataFormat": "svg",
+          "rotationCenterX": 62,
+          "rotationCenterY": 22
+        }
+      ],
+      "sounds": [],
+      "volume": 100,
+      "layerOrder": 2,
+      "visible": true,
+      "x": 0,
+      "y": -136,
+      "size": 100,
+      "direction": 90,
+      "draggable": false,
+      "rotationStyle": "all around"
+    },
+    {
+      "isStage": false,
+      "name": "Stop / Clear",
+      "variables": {},
+      "lists": {},
+      "broadcasts": {},
+      "blocks": {
+        "click": {
+          "opcode": "event_whenthisspriteclicked",
+          "next": "send",
+          "parent": null,
+          "inputs": {},
+          "fields": {},
+          "shadow": false,
+          "topLevel": true,
+          "x": 30,
+          "y": 30
+        },
+        "send": {
+          "opcode": "event_broadcast",
+          "next": null,
+          "parent": "click",
+          "inputs": {
+            "BROADCAST_INPUT": [
+              1,
+              "message"
+            ]
+          },
+          "fields": {},
+          "shadow": false,
+          "topLevel": false
+        },
+        "message": {
+          "opcode": "event_broadcast_menu",
+          "next": null,
+          "parent": "send",
+          "inputs": {},
+          "fields": {
+            "BROADCAST_OPTION": [
+              "Stop",
+              "stop"
+            ]
+          },
+          "shadow": true,
+          "topLevel": false
+        }
+      },
+      "comments": {},
+      "currentCostume": 0,
+      "costumes": [
+        {
+          "assetId": "stop",
+          "name": "Stop / Clear",
+          "md5ext": "stop.svg",
+          "dataFormat": "svg",
+          "rotationCenterX": 62,
+          "rotationCenterY": 22
+        }
+      ],
+      "sounds": [],
+      "volume": 100,
+      "layerOrder": 3,
+      "visible": true,
+      "x": 150,
+      "y": -136,
+      "size": 100,
+      "direction": 90,
+      "draggable": false,
+      "rotationStyle": "all around"
+    }
+  ],
+  "monitors": [
+    {
+      "id": "sample-state",
+      "mode": "default",
+      "opcode": "data_variable",
+      "params": {
+        "VARIABLE": "Sample state"
+      },
+      "spriteName": null,
+      "value": "",
+      "width": 0,
+      "height": 0,
+      "x": 16,
+      "y": 99,
+      "visible": true,
+      "sliderMin": 0,
+      "sliderMax": 100,
+      "isDiscrete": true
+    },
+    {
+      "id": "sample-paired",
+      "mode": "default",
+      "opcode": "data_variable",
+      "params": {
+        "VARIABLE": "Relay paired"
+      },
+      "spriteName": null,
+      "value": "",
+      "width": 0,
+      "height": 0,
+      "x": 16,
+      "y": 127,
+      "visible": true,
+      "sliderMin": 0,
+      "sliderMax": 100,
+      "isDiscrete": true
+    },
+    {
+      "id": "sample-connection",
+      "mode": "default",
+      "opcode": "data_variable",
+      "params": {
+        "VARIABLE": "Connection"
+      },
+      "spriteName": null,
+      "value": "",
+      "width": 0,
+      "height": 0,
+      "x": 16,
+      "y": 155,
+      "visible": true,
+      "sliderMin": 0,
+      "sliderMax": 100,
+      "isDiscrete": true
+    },
+    {
+      "id": "sample-result",
+      "mode": "default",
+      "opcode": "data_variable",
+      "params": {
+        "VARIABLE": "Result"
+      },
+      "spriteName": null,
+      "value": "",
+      "width": 0,
+      "height": 0,
+      "x": 16,
+      "y": 183,
+      "visible": true,
+      "sliderMin": 0,
+      "sliderMax": 100,
+      "isDiscrete": true
+    },
+    {
+      "id": "sample-error",
+      "mode": "default",
+      "opcode": "data_variable",
+      "params": {
+        "VARIABLE": "Last error"
+      },
+      "spriteName": null,
+      "value": "",
+      "width": 0,
+      "height": 0,
+      "x": 16,
+      "y": 211,
+      "visible": true,
+      "sliderMin": 0,
+      "sliderMax": 100,
+      "isDiscrete": true
+    }
+  ],
+  "extensions": [],
+  "meta": {
+    "semver": "3.0.0",
+    "vm": "0.2.0",
+    "agent": "TurboWarp sample"
+  }
+}
