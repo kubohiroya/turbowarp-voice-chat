@@ -246,7 +246,7 @@ function registerFixedInputEditors(scratch, runtime, visibleBlocks) {
 	return dispose;
 }
 //#endregion
-//#region node_modules/.pnpm/@kubohiroya+turbowarp-named-functions@0.3.0_react@18.3.1/node_modules/@kubohiroya/turbowarp-named-functions/dist/composition.js
+//#region node_modules/.pnpm/@kubohiroya+turbowarp-named-functions@0.4.0_react@18.3.1/node_modules/@kubohiroya/turbowarp-named-functions/dist/composition.js
 /**
 * A small JSON Schema validator for function arguments and returns. It interprets the schema at run time and
 * never generates code, so it also works where `eval` is unavailable (for example Cloudflare Workers).
@@ -1471,7 +1471,7 @@ var block_definitions_default = {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/@kubohiroya+turbowarp-openai-realtime-api@0.3.0_react@18.3.1/node_modules/@kubohiroya/turbowarp-openai-realtime-api/dist/composition.js
+//#region node_modules/.pnpm/@kubohiroya+turbowarp-openai-realtime-api@0.4.0_react@18.3.1/node_modules/@kubohiroya/turbowarp-openai-realtime-api/dist/composition.js
 /**
 * Conversation logic over a transport: sending user text, collecting assistant output, and
 * answering function calls with `function_call_output` followed by one `response.create`.
@@ -2139,7 +2139,7 @@ var Composition = class {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/@kubohiroya+turbowarp-web-speech@0.3.0/node_modules/@kubohiroya/turbowarp-web-speech/dist/composition.js
+//#region node_modules/.pnpm/@kubohiroya+turbowarp-web-speech@0.4.0/node_modules/@kubohiroya/turbowarp-web-speech/dist/composition.js
 /** Errors after which restarting in continuous mode would only loop. */
 var FATAL_ERRORS = /* @__PURE__ */ new Set([
 	"not-allowed",
