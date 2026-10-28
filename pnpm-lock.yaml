@@ -9,27 +9,27 @@ importers:
   .:
     dependencies:
       '@kubohiroya/turbowarp-named-functions':
-        specifier: ^0.3.0
-        version: 0.3.0(react@18.3.1)
+        specifier: ^0.4.0
+        version: 0.4.0(react@18.3.1)
       '@kubohiroya/turbowarp-openai-realtime-api':
-        specifier: ^0.3.0
-        version: 0.3.0(react@18.3.1)
+        specifier: ^0.4.0
+        version: 0.4.0(react@18.3.1)
       '@kubohiroya/turbowarp-web-speech':
-        specifier: ^0.3.0
-        version: 0.3.0
+        specifier: ^0.4.0
+        version: 0.4.0
     devDependencies:
       '@eslint/js':
         specifier: ^9.39.5
         version: 9.39.5
       '@kubohiroya/turbowarp-extension-data-editor':
-        specifier: ^0.4.0
-        version: 0.4.0(react@18.3.1)
+        specifier: ^0.5.0
+        version: 0.5.0(react@18.3.1)
       '@kubohiroya/turbowarp-extension-manifest':
-        specifier: ^0.4.0
-        version: 0.4.0
+        specifier: ^0.5.0
+        version: 0.5.0
       '@kubohiroya/vite-plugin-turbowarp-extension':
-        specifier: ^0.9.0
-        version: 0.9.0(vite@8.2.2(@types/node@24.13.3)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1))
+        specifier: ^0.10.0
+        version: 0.10.0(vite@8.2.2(@types/node@24.13.3)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1))
       '@types/node':
         specifier: ^24.13.3
         version: 24.13.3
@@ -278,8 +278,8 @@ packages:
   '@jridgewell/trace-mapping@0.3.31':
     resolution: {integrity: sha512-zzNR+SdQSDJzc8joaeP8QQoCQr8NuYx2dIIytl1QeBEZHJ9uW6hebsrYgbz8hJwUQao3TWCMtmfV8Nu1twOLAw==}
 
-  '@kubohiroya/turbowarp-extension-data-editor@0.4.0':
-    resolution: {integrity: sha512-AijNYwf8LG+i0NLx48wYsKpObWRZ347BEtrsLv4PNIc20UItC4hs4yTwnGNd+ffGHIrSqcWUjt3ZJysFt/KzsQ==}
+  '@kubohiroya/turbowarp-extension-data-editor@0.5.0':
+    resolution: {integrity: sha512-MltTv+sDgmWXS9RDl8Ea1oPpISycTPq4h3hevZ6aVBkuFQB/2JiRekYK2CkIazj+L6w3egLV6HekDmP4vtVaUQ==}
     engines: {node: '>=24'}
     peerDependencies:
       react: ^16.14.0 || ^17 || ^18
@@ -290,24 +290,24 @@ packages:
       react-dom:
         optional: true
 
-  '@kubohiroya/turbowarp-extension-manifest@0.4.0':
-    resolution: {integrity: sha512-42Wv4Zu9K7kYKUFZX+jSeJsXztwL9XS1nPaTDWmwhyseaUAbaCjFLyH9Iu9S8B00Hi+5/s8pcbEmSDcDjq/XOQ==}
+  '@kubohiroya/turbowarp-extension-manifest@0.5.0':
+    resolution: {integrity: sha512-YD8fwGTwTC6oMinmVLRp5+x/6piKLTYNraKnsc+oEi/w6NFdePm1ocV8eHnBBMcqEO2usr2mI/0qnV66Ex35YA==}
     engines: {node: '>=24'}
 
-  '@kubohiroya/turbowarp-named-functions@0.3.0':
-    resolution: {integrity: sha512-+5E9vghW5/Gd7eFpHTDGW9E5Ge3c8pJTfd/5ZXyrwbxalo+zZgAIrcS+a2yywFt520ZnyLwbrJ64KZWEqSNtSA==}
+  '@kubohiroya/turbowarp-named-functions@0.4.0':
+    resolution: {integrity: sha512-MuTW5XLKUOtGKhbitn4rIiQGDchAr7Oi+N01qDT1aBGZ4wFjjym5uE2Vas2+8Jc0voDE6MNA3GcrgjBarKy+sA==}
     engines: {node: '>=24'}
 
-  '@kubohiroya/turbowarp-openai-realtime-api@0.3.0':
-    resolution: {integrity: sha512-1k1/TgjQfN8GxXV4uJvlVuH0/R/BFpJocghk0Uo0Q8CKA3+4xgqecQRuej924pV5jfuKgROauqTZVuXF1zgt/Q==}
+  '@kubohiroya/turbowarp-openai-realtime-api@0.4.0':
+    resolution: {integrity: sha512-6YWNZcr4pF3BVvCErdDrUV3RFszpTp5KBXalWA/ihJZuctXDd4YMsP94qoL5qDK4NR/xSoavjs1wFN7DRwuxyg==}
     engines: {node: '>=24'}
 
-  '@kubohiroya/turbowarp-web-speech@0.3.0':
-    resolution: {integrity: sha512-DkEHLIYum31KaQ702MzCa3B6jRGeofBWnI/xDQcaYfh1PSSqWDM39hKoUM32+95wmGR6HIN9hpw6qkI0A88pag==}
+  '@kubohiroya/turbowarp-web-speech@0.4.0':
+    resolution: {integrity: sha512-Q9Z2XNaLO1+r2P3zt3NXdRV/PB8NdTGcLXaMZHx+k6NKs6dy75evUblBPRKZzqhDycA1+3R40jMKYG5ydpxI7w==}
     engines: {node: '>=24'}
 
-  '@kubohiroya/vite-plugin-turbowarp-extension@0.9.0':
-    resolution: {integrity: sha512-RU1+s/xJ02rsuEdMvYMEcxiPpTF7eyiTFlodmF780rzC91cAiESPf4HiFqQCJix6zd+eNbu3SulI2piQK6C1Zw==}
+  '@kubohiroya/vite-plugin-turbowarp-extension@0.10.0':
+    resolution: {integrity: sha512-N/c1gsmOS9dozskUzmSLRwqVZzOLDGs44cOPBv2VdITR2v//TFQKlNw3jhBLVeyMfdlfAICwrpvC74xFgZxrNA==}
     engines: {node: '>=24'}
     peerDependencies:
       vite: '>=8.0.0'
@@ -1357,7 +1357,7 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.5
 
-  '@kubohiroya/turbowarp-extension-data-editor@0.4.0(react@18.3.1)':
+  '@kubohiroya/turbowarp-extension-data-editor@0.5.0(react@18.3.1)':
     dependencies:
       '@rjsf/core': 5.24.13(@rjsf/utils@5.24.13(react@18.3.1))(react@18.3.1)
       '@rjsf/utils': 5.24.13(react@18.3.1)
@@ -1369,25 +1369,25 @@ snapshots:
     optionalDependencies:
       react: 18.3.1
 
-  '@kubohiroya/turbowarp-extension-manifest@0.4.0': {}
+  '@kubohiroya/turbowarp-extension-manifest@0.5.0': {}
 
-  '@kubohiroya/turbowarp-named-functions@0.3.0(react@18.3.1)':
+  '@kubohiroya/turbowarp-named-functions@0.4.0(react@18.3.1)':
     dependencies:
-      '@kubohiroya/turbowarp-extension-data-editor': 0.4.0(react@18.3.1)
+      '@kubohiroya/turbowarp-extension-data-editor': 0.5.0(react@18.3.1)
     transitivePeerDependencies:
       - react
       - react-dom
 
-  '@kubohiroya/turbowarp-openai-realtime-api@0.3.0(react@18.3.1)':
+  '@kubohiroya/turbowarp-openai-realtime-api@0.4.0(react@18.3.1)':
     dependencies:
-      '@kubohiroya/turbowarp-named-functions': 0.3.0(react@18.3.1)
+      '@kubohiroya/turbowarp-named-functions': 0.4.0(react@18.3.1)
     transitivePeerDependencies:
       - react
       - react-dom
 
-  '@kubohiroya/turbowarp-web-speech@0.3.0': {}
+  '@kubohiroya/turbowarp-web-speech@0.4.0': {}
 
-  '@kubohiroya/vite-plugin-turbowarp-extension@0.9.0(vite@8.2.2(@types/node@24.13.3)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1))':
+  '@kubohiroya/vite-plugin-turbowarp-extension@0.10.0(vite@8.2.2(@types/node@24.13.3)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1))':
     dependencies:
       acorn: 8.18.0
       vite: 8.2.2(@types/node@24.13.3)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1)
