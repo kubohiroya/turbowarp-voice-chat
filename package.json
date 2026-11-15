@@ -1,6 +1,6 @@
 {
   "name": "@kubohiroya/turbowarp-voice-chat",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "Voice chat with an AI for TurboWarp: combines OpenAI Realtime, browser speech, named functions as tools, and a forced coffee break.",
   "author": {
     "name": "Hiroya Kubo",
