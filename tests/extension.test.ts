@@ -94,7 +94,8 @@ describe('VoiceChatExtension', () => {
       response: {output: [{type: 'function_call', name: 'get_score', call_id: 'c1', arguments: '{}'}]}
     });
     await flush();
-    const thread = runtime.spawnThread();
+    // The VM runs the started hat's script; the thread's top block is the hat.
+    const thread = runtime.spawnThread('hat0');
     expect(extension.defineFunction({NAME: 'get_score'}, {thread})).toBe(true);
     extension.returnValue({VALUE: '{"score":42}'}, {thread});
     await flush();
