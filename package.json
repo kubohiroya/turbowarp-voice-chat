@@ -1,6 +1,6 @@
 {
   "name": "@kubohiroya/turbowarp-voice-chat",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "Voice chat with an AI for TurboWarp: combines OpenAI Realtime, browser speech, named functions as tools, and a forced coffee break.",
   "author": {
     "name": "Hiroya Kubo",
@@ -93,5 +93,51 @@
     "revision": "3155ef2da9dd3b041a053748c92d34306207d802",
     "revisionRole": "base-commit",
     "sourceState": "local-release-overlay"
+  },
+  "turbowarpExtension": {
+    "resourceDeclaration": {
+      "schemaVersion": 1,
+      "resources": [
+        {
+          "type": "network",
+          "usage": "required",
+          "purpose": {
+            "en": "Send conversation input and receive AI replies",
+            "ja": "会話の入力を送信し、AIの応答を受信する"
+          },
+          "data": {
+            "direction": "bidirectional",
+            "content": {
+              "en": "Audio or recognized text, tool calls/results and AI responses; browser recognition may send audio to the browser provider",
+              "ja": "音声または認識したテキスト、ツール呼び出し・結果、AI応答。ブラウザ音声認識ではブラウザ提供元へ音声が送信される場合がある"
+            }
+          }
+        },
+        {
+          "type": "microphone",
+          "usage": "conditional",
+          "purpose": {
+            "en": "Capture spoken conversation input",
+            "ja": "会話の音声入力を取得する"
+          },
+          "condition": {
+            "en": "When voice input is started",
+            "ja": "音声入力を開始する場合"
+          }
+        },
+        {
+          "type": "audio-output",
+          "usage": "conditional",
+          "purpose": {
+            "en": "Play AI replies or browser speech synthesis",
+            "ja": "AIの音声応答やブラウザの読み上げを再生する"
+          },
+          "condition": {
+            "en": "When a spoken response is enabled",
+            "ja": "音声による応答を有効にした場合"
+          }
+        }
+      ]
+    }
   }
 }
