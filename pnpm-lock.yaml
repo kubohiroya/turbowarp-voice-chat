@@ -9,21 +9,21 @@ importers:
   .:
     dependencies:
       '@kubohiroya/turbowarp-named-functions':
-        specifier: ^0.4.2
-        version: 0.4.2
+        specifier: ^0.5.0
+        version: 0.5.0
       '@kubohiroya/turbowarp-openai-realtime-api':
-        specifier: ^0.5.1
-        version: 0.5.1
+        specifier: ^0.6.0
+        version: 0.6.0
       '@kubohiroya/turbowarp-web-speech':
-        specifier: ^0.4.2
-        version: 0.4.2
+        specifier: ^0.5.0
+        version: 0.5.0
     devDependencies:
       '@eslint/js':
         specifier: ^9.39.5
         version: 9.39.5
       '@kubohiroya/turbowarp-extension-data-editor':
-        specifier: ^0.10.0
-        version: 0.10.0(react@18.3.1)
+        specifier: ^0.11.0
+        version: 0.11.0(react@18.3.1)
       '@kubohiroya/turbowarp-extension-manifest':
         specifier: ^0.5.0
         version: 0.5.0
@@ -278,8 +278,8 @@ packages:
   '@jridgewell/trace-mapping@0.3.31':
     resolution: {integrity: sha512-zzNR+SdQSDJzc8joaeP8QQoCQr8NuYx2dIIytl1QeBEZHJ9uW6hebsrYgbz8hJwUQao3TWCMtmfV8Nu1twOLAw==}
 
-  '@kubohiroya/turbowarp-extension-data-editor@0.10.0':
-    resolution: {integrity: sha512-21IQC6PbnIBExYykbzQ9UF709Cl9kgLL6foKcktpeKFGoKs/pVauWUQErvjYc9bxCVcJTEFV2DKgZ4uqExvBng==}
+  '@kubohiroya/turbowarp-extension-data-editor@0.11.0':
+    resolution: {integrity: sha512-x1ttE4cvsKfKJz7RNDt4/hK/9pk+GEHDm4oR9Y6t0qY6nRDXatAl3ybPJhU7Y702tCYhmtn9Fo46hjYM6OS9dA==}
     engines: {node: '>=24'}
     peerDependencies:
       react: ^16.14.0 || ^17 || ^18
@@ -294,16 +294,16 @@ packages:
     resolution: {integrity: sha512-YD8fwGTwTC6oMinmVLRp5+x/6piKLTYNraKnsc+oEi/w6NFdePm1ocV8eHnBBMcqEO2usr2mI/0qnV66Ex35YA==}
     engines: {node: '>=24'}
 
-  '@kubohiroya/turbowarp-named-functions@0.4.2':
-    resolution: {integrity: sha512-CAusdExoTr64TNq4TO69jxxCJ63JSk5wAxnXTih2uzcndedXtmPgRGRyG86UkY4h28r3Ixfc5sH3WVPVV6kSAg==}
+  '@kubohiroya/turbowarp-named-functions@0.5.0':
+    resolution: {integrity: sha512-kZjlx2ZpaDhEekzVuYhTlS4Ev2lt7yWh2C4v97K9SQ+An8kZHJHVHmsdbvuYBQW5NtNGOpDc81rFCG2TZtAO9Q==}
     engines: {node: '>=24'}
 
-  '@kubohiroya/turbowarp-openai-realtime-api@0.5.1':
-    resolution: {integrity: sha512-9I/AvjdfKxkF12938fk7jOdCKQl3wgQp8I6zPiI4ShV2lgdk74W1mHLwR4IPGPI9JBq9PjMWsvsgyI4oVmjsBQ==}
+  '@kubohiroya/turbowarp-openai-realtime-api@0.6.0':
+    resolution: {integrity: sha512-pb1iBRJEoFncP44UQS5yfeIL7lW3j17S+P6hspN/dIicCU4oPhmzwMi79fNuYmFIBu0vnopfetPdTNUzupMUQQ==}
     engines: {node: '>=24'}
 
-  '@kubohiroya/turbowarp-web-speech@0.4.2':
-    resolution: {integrity: sha512-BhzbxfYY2/YpEwlscLHXJZarcnXtmEnBrHZqV64GTjiMVXiitsmOHIvgo03H0xCg3O/gBrZEESB6KivizHA/Ag==}
+  '@kubohiroya/turbowarp-web-speech@0.5.0':
+    resolution: {integrity: sha512-z6z4RyNfF0r6lRk56hSa5zU2lRGR9aaOcrrZ2h5qCkevhg59hRCxRHftJfLUYsot7vIJ8SMKQ8zcJ5g2G8iKlQ==}
     engines: {node: '>=24'}
 
   '@kubohiroya/vite-plugin-turbowarp-extension@0.11.0':
@@ -1357,7 +1357,7 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.5
 
-  '@kubohiroya/turbowarp-extension-data-editor@0.10.0(react@18.3.1)':
+  '@kubohiroya/turbowarp-extension-data-editor@0.11.0(react@18.3.1)':
     dependencies:
       '@rjsf/core': 5.24.13(@rjsf/utils@5.24.13(react@18.3.1))(react@18.3.1)
       '@rjsf/utils': 5.24.13(react@18.3.1)
@@ -1371,13 +1371,13 @@ snapshots:
 
   '@kubohiroya/turbowarp-extension-manifest@0.5.0': {}
 
-  '@kubohiroya/turbowarp-named-functions@0.4.2': {}
+  '@kubohiroya/turbowarp-named-functions@0.5.0': {}
 
-  '@kubohiroya/turbowarp-openai-realtime-api@0.5.1':
+  '@kubohiroya/turbowarp-openai-realtime-api@0.6.0':
     dependencies:
-      '@kubohiroya/turbowarp-named-functions': 0.4.2
+      '@kubohiroya/turbowarp-named-functions': 0.5.0
 
-  '@kubohiroya/turbowarp-web-speech@0.4.2': {}
+  '@kubohiroya/turbowarp-web-speech@0.5.0': {}
 
   '@kubohiroya/vite-plugin-turbowarp-extension@0.11.0(vite@8.2.2(@types/node@24.13.3)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1))':
     dependencies:
